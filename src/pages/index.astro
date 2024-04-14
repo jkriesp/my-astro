@@ -3,6 +3,13 @@ import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import BlogPostPreviewCard from "../components/BlogPostPreviewCard.astro";
+import { getCollection } from "astro:content";
+// Fetch Blog Posts
+
+const posts = (await getCollection("blog")).sort(
+  (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf(),
+);
 ---
 
 <!doctype html>
@@ -12,7 +19,19 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
   </head>
   <body>
     <Header />
+    {
+      // Render Blog Post Previews TODO: Fix CSS
+      posts.map((post) => (
+        <BlogPostPreviewCard
+          title={post.data.title}
+          description={post.data.description}
+          heroImage={post.data.heroImage}
+          postUrl={post.slug}
+        />
+      ))
+    }
     <main>
+      <div></div>
       <h1>Welcome to My Development Journey🧑‍🚀</h1>
       <p>
         Hello and thank you for visiting! My name is Jens Kristian Espevik, and
