@@ -3,6 +3,7 @@ import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import LatestBlogPosts from "../components/LatestBlogPosts.astro";
 ---
 
 <!doctype html>
@@ -13,7 +14,7 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
   <body>
     <Header />
     <main>
-      <h1>Welcome to My Development Journey🧑‍🚀</h1>
+      <h1>Welcome to My Development Journey🚀</h1>
       <p>
         Hello and thank you for visiting! My name is Jens Kristian Espevik, and
         this blog is my digital diary where I chronicle the ongoing adventure of
@@ -48,13 +49,16 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
       </section>
 
       <section>
-        <h2>Under Construction</h2>
         <p>
           As you can see, the digital space is still under construction. I am
           somewhat actively working on this website to learn the Astro
-          framework. If you have any tips or guides in that regard please give
-          it to me!
+          framework. If you have any tips or guides in that regard please send
+          it my way!
         </p>
+      </section>
+      <section>
+        <h2>Latest blog entries</h2>
+        <LatestBlogPosts />
       </section>
     </main>
     <Footer />

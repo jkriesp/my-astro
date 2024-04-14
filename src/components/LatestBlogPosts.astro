@@ -1,0 +1,34 @@
+---
+import BlogPostPreviewCard from "../components/BlogPostPreviewCard.astro";
+import { getCollection } from "astro:content";
+// Fetch Blog Posts
+
+const posts = (await getCollection("blog")).sort(
+  (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
+);
+---
+
+<style>
+  .cardContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+</style>
+
+<div class="cardContainer">
+  {
+    // Render the 3 latest Blog Post Previews
+    posts
+      .slice(-3)
+      .map((post) => (
+        <BlogPostPreviewCard
+          title={post.data.title}
+          description={post.data.description}
+          heroImage={post.data.heroImage}
+          postUrl={post.slug}
+        />
+      ))
+  }
+</div>
