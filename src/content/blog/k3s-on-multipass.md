@@ -6,7 +6,7 @@ heroImage: "/blog-placeholder-5.jpg"
 ---
 
 
-This guide will walk you through the process of setting up a k3s Kubernetes cluster on Multipass, from creating the virtual machines to deploying k3s and joining the worker nodes to the control plane.
+This guide will walk you through the process of setting up a k3s Kubernetes cluster on Multipass, from creating the virtual machines to deploying k3s and joining the worker nodes to the control plane. The goal is to have an Kubernetes cluster that you can experiment and break without consequence.
 
 ## Introduction
 
@@ -21,6 +21,7 @@ Before creating virtual machines, it's useful to know what images are available:
 ```bash
 multipass find
 ```
+
 ```bash
 Image                       Aliases           Version          Description
 20.04                       focal             20240408         Ubuntu 20.04 LTS
@@ -37,7 +38,6 @@ ros-noetic                                    0.1              A development and
 ros2-humble                                   0.1              A development and testing environment for ROS 2 Humble.
 ```
 
-
 ### Creating VMs
 
 Create one control node and two worker nodes using Ubuntu 23.10:
@@ -52,6 +52,7 @@ multipass launch -c 1 -m 1g -d 4g -n k3s-worker-2 23.10
 ```
 
 **Flags Explanation:**
+
 - `-c`: Number of CPUs
 - `-m`: Amount of memory
 - `-d`: Disk space
@@ -64,6 +65,7 @@ Ensure all nodes are running:
 ```bash
 multipass list
 ```
+
 ```bash
 Name                    State             IPv4             Image
 k3s-control             Running           192.168.64.16    Ubuntu 23.10
@@ -175,4 +177,4 @@ Set up monitoring and logging to maintain the health of your cluster:
 
 ## Conclusion
 
-Setting up a k3s cluster on Multipass provides a lightweight and flexible development environment suitable for various use cases, from learning Kubernetes to developing cloud-native applications.
+Setting up a k3s cluster on Multipass provides a lightweight and flexible development environment suitable for various use cases, from learning Kubernetes to developing cloud-native applications. It's the perfect environment to fail safely in.
