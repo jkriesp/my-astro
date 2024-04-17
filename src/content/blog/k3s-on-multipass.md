@@ -1,7 +1,7 @@
 ---
 title: "Setting Up a k3s Cluster on Multipass"
 description: "Explore the setup of a k3s Kubernetes cluster using Multipass, offering a streamlined, resource-efficient environment ideal for Kubernetes experimentation and learning."
-pubDate: "Apr 16 2024"
+pubDate: "Apr 17 2024"
 heroImage: "/blog-placeholder-5.jpg"
 ---
 
