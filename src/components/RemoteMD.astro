@@ -1,0 +1,27 @@
+---
+// Import the Markdown component from "astro-remote"
+import { Markdown } from "astro-remote";
+
+// Define props
+export interface Props {
+  url: string; // Define a prop to accept the URL
+}
+
+// Destructure URL from props
+const { url } = Astro.props as Props;
+
+// Fetch the Markdown content using the provided URL
+let markdown = "";
+if (url) {
+  markdown = await fetch(url).then((res) => res.text());
+  console.log("Markdown fetched:", markdown); // Debugging output
+}
+---
+
+<em
+  >Work in progress. Content below is being fetched remotely and I'm working on
+  the formatting</em
+>
+<!-- Render the fetched Markdown content if available -->{
+  markdown && <Markdown content={markdown} />
+}

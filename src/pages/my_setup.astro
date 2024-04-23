@@ -1,0 +1,23 @@
+---
+import Layout from "../layouts/BlogPost.astro";
+import RemoteMD from "../components/RemoteMD.astro";
+---
+
+<Layout
+  title="My Setup"
+  description="Explore my development environment configuration (dotfiles) to gain insights into my workflow and the tools I leverage for optimal productivity."
+  pubDate={new Date("April 23 2024")}
+  heroImage="/blog-placeholder-about.jpg"
+>
+  <section>
+    <p>
+      Explore my development environment configuration (dotfiles) to gain
+      insights into my workflow and the tools I leverage for optimal
+      productivity.
+    </p>
+  </section>
+
+  <RemoteMD
+    url="https://raw.githubusercontent.com/jkriesp/dotfiles/main/readme.md"
+  />
+</Layout>
