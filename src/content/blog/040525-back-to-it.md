@@ -1,0 +1,32 @@
+---
+title: "Back to Blogging: New Challenges and New Beginnings"
+description: "Reflecting on the past months and diving into my latest project in the telecom sector."
+pubDate: "Feb 4 2025"
+heroImage: "/blog-placeholder-5.jpg"
+---
+
+## A Long Overdue Update
+
+It's been a while since my last blog post. The past few months have been intense, with work taking up a significant chunk of my time. I spent the fall booked on a fascinating project in the health sector, which challenged me in ways I hadn't anticipated. To sum it up - how do you scale a Cloud Center of Excellence with limited resources and a business that's in the beginning part maturing when it comes to the domain? Legacy systems and processes that needs to be replaced, in with DevSecOps and the cloud domain. I learned not only how to communicate change, but how to navigate with care when comes to these types of changes. You're not just talking about changing and improving processes, you're talking about peoples jobs and responsibilities. Of course it's going to get a bit heated. Key takeways - It will never be perfect, and you can't improve unless you do. Talking about strategies and processes is great; know when to operationalize and iterate.
+
+In January 2025, I transitioned to a new project in the telecommunications sector. It's an exciting shift, and I find myself once again in a space where I’m stretching my development skills in new ways. As always, stepping into a new domain comes with its fair share of uncertainty—like swimming in deep waters—but that’s what makes it thrilling. Growth happens when we push ourselves beyond our comfort zones, and this project is proving to be a fantastic opportunity to do just that.
+
+## Applying My Skills in a New Industry
+
+One of the exciting aspects of this project is the opportunity to expand my expertise. While I have experience with React for frontend development, the backend is cloud-based on AWS — a platform I am still getting familiar with. Learning AWS is something I’m actively working on, and I look forward to deepening my understanding of its services and best practices.
+
+Another challenge has been adapting to the software development landscape within the telecom industry. Unlike my previous experience in the health sector, where security and compliance were the biggest concerns, this project is still in its early stages. A major focus right now is getting the lay of the land—understanding what data is accessible, what data we need to present, and how we communicate with the business. Navigating this landscape also means identifying key stakeholders, knowing who to talk to for data access, and figuring out the best way to integrate with existing systems. Are there APIs available, or will we need to engineer them from scratch? These are the kinds of questions we are working through, making this an exciting and exploratory phase of the project.
+
+
+## What’s Next?
+
+Looking ahead, I want to get back to writing more regularly. Writing not only helps consolidate what I learn but also opens up great discussions with fellow developers. Here are a few topics I’m considering for future posts:
+
+- **Lessons from switching from Azure to AWS** – What transfers easily, and what doesn’t?
+- **Building scalable and real-time applications in the telecom sector**
+- **Applying React effectively in large-scale enterprise projects**
+- **A deep dive into authentication strategies with Supabase and AWS Cognito**
+
+If any of these topics resonate with you, let me know! I’d love to tailor my posts to what you find most valuable.
+
+It’s good to be back. Here’s to a new year of learning, sharing, and building cool things together! 🚀
