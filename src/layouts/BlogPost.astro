@@ -93,7 +93,7 @@ const Content = 'render' in props ? (await props.render()).Content : null;
 						</div>
 						<TagList tags={tags} className="post-tags" />
 					</div>
-					{Content && <Content />}
+					{Content ? <Content /> : <slot />}
 				</div>
 			</article>
 		</main>
