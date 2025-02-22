@@ -13,7 +13,7 @@
   --gray-dark: 34, 41, 57;
   --gray-gradient: rgba(var(--gray-light), 50%), #fff;
   --box-shadow: 0 2px 6px rgba(var(--gray), 25%),
-    0 8px 24px rgba(var(--gray), 33%), 0 16px 32px rgba(var(--gray), 33%);
+    0 8px 24px rgba(var(--gray), 33%), 0 16px 32px rgba(var(--gray), 5%);
 
   /* Theme colors */
   --background: #ffffff;
@@ -24,14 +24,17 @@
 }
 
 [data-theme="dark"] {
-  --accent: #7c89ff;
-  --accent-dark: #5865f2;
-  --background: #1a1a1a;
+  --accent: #888888;
+  --accent-dark: #666666;
+  --background: #121212;
   --text: #e0e0e0;
-  --text-header: #ffffff;
-  --gray-gradient: rgba(var(--gray-dark), 50%), #1a1a1a;
-  --code-bg: rgb(var(--gray-dark));
-  --page-background: #1a1a1a;
+  --text-header: #e0e0e0;
+  --gray-gradient: rgba(68, 68, 68, 50%), #121212;
+  --code-bg: #1e1e1e;
+  --page-background: #121212;
+  --gray: 176, 176, 176; /* #B0B0B0 for secondary text */
+  --gray-light: 68, 68, 68; /* #444444 for borders */
+  --gray-dark: 224, 224, 224; /* #E0E0E0 matching primary text */
 }
 
 @font-face {
