@@ -1,7 +1,6 @@
 ---
 import BlogPostPreviewCard from "../components/BlogPostPreviewCard.astro";
 import { getCollection } from "astro:content";
-// Fetch Blog Posts
 
 const posts = (await getCollection("blog")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
@@ -20,15 +19,8 @@ const posts = (await getCollection("blog")).sort(
 <div class="cardContainer">
   {
     // Render the 3 latest Blog Post Previews
-    posts
-      .slice(-3)
-      .map((post) => (
-        <BlogPostPreviewCard
-          title={post.data.title}
-          description={post.data.description}
-          heroImage={post.data.heroImage}
-          postUrl={post.slug}
-        />
-      ))
+    posts.slice(-3).map((post) => (
+      <BlogPostPreviewCard post={post} />
+    ))
   }
 </div>

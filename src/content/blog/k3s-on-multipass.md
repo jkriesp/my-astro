@@ -3,8 +3,8 @@ title: "Setting Up a k3s Cluster on Multipass"
 description: "Explore the setup of a k3s Kubernetes cluster using Multipass, offering a streamlined, resource-efficient environment ideal for Kubernetes experimentation and learning."
 pubDate: "Apr 17 2024"
 heroImage: "/blog-placeholder-5.jpg"
+tags: ["kubernetes", "k3s", "multipass", "devops", "virtualization", "tutorial"]
 ---
-
 
 This guide will walk you through the process of setting up a k3s Kubernetes cluster on Multipass, from creating the virtual machines to deploying k3s and joining the worker nodes to the control plane. The goal is to have an Kubernetes cluster that you can experiment and break without consequence.
 
