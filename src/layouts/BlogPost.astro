@@ -6,11 +6,20 @@ import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import TagList from '../components/TagList.astro';
 
-type Props = CollectionEntry<'blog'>;
+type Props = CollectionEntry<'blog'> | {
+  title: string;
+  description: string;
+  pubDate: Date;
+  updatedDate?: Date;
+  heroImage?: string;
+  tags?: string[];
+};
 
-const { data, render } = Astro.props;
-const { title, description, pubDate, updatedDate, heroImage, tags = [] } = data;
-const { Content } = await render();
+const props = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, tags = [] } = 
+  'data' in props ? props.data : props;
+
+const Content = 'render' in props ? (await props.render()).Content : null;
 ---
 
 <html lang="en">
@@ -84,7 +93,7 @@ const { Content } = await render();
 						</div>
 						<TagList tags={tags} className="post-tags" />
 					</div>
-					<Content />
+					{Content && <Content />}
 				</div>
 			</article>
 		</main>
