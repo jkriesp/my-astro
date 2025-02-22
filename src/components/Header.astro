@@ -1,5 +1,6 @@
 ---
 import HeaderLink from "./HeaderLink.astro";
+import ThemeToggle from "./ThemeToggle.astro";
 import { SITE_TITLE } from "../consts";
 ---
 
@@ -12,6 +13,7 @@ import { SITE_TITLE } from "../consts";
       <HeaderLink href="/about">About</HeaderLink>
     </div>
     <div class="social-links">
+      <ThemeToggle />
       <a href="https://techhub.social/@daudir" target="_blank">
         <span class="sr-only">Follow Jenske on Mastodon</span>
         <svg viewBox="0 0 16 16" aria-hidden="true" width="32" height="32"
@@ -37,7 +39,7 @@ import { SITE_TITLE } from "../consts";
   header {
     margin: 0;
     padding: 0 1em;
-    background: white;
+    background: var(--background);
     box-shadow: 0 2px 8px rgba(var(--black), 5%);
   }
   h2 {
@@ -56,7 +58,7 @@ import { SITE_TITLE } from "../consts";
   }
   nav a {
     padding: 1em 0.5em;
-    color: var(--black);
+    color: var(--text);
     border-bottom: 4px solid transparent;
     text-decoration: none;
   }
