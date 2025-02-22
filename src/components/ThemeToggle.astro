@@ -14,10 +14,15 @@
     border: 0;
     background: none;
     cursor: pointer;
-    padding: 0;
+    padding: 0.5em;
     opacity: 0.8;
     transition: opacity 0.2s ease;
     color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
   }
 
   #themeToggle:hover {
@@ -32,6 +37,16 @@
   html[data-theme='light'] #themeToggle .moon {
     display: inline;
     stroke: currentColor;
+  }
+
+  @media (max-width: 720px) {
+    #themeToggle {
+      padding: 0.7em;
+    }
+    #themeToggle svg {
+      width: 28px;
+      height: 28px;
+    }
   }
 </style>
 
