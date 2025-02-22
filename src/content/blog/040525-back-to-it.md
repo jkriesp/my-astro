@@ -3,6 +3,7 @@ title: "Back to Blogging: New Challenges and New Beginnings"
 description: "Reflecting on the past months and diving into my latest project in the telecom sector."
 pubDate: "Feb 4 2025"
 heroImage: "/blog-placeholder-5.jpg"
+tags: ["career", "aws", "telecom", "react", "cloud"]
 ---
 
 ## A Long Overdue Update
@@ -16,7 +17,6 @@ In January 2025, I transitioned to a new project in the telecommunications secto
 One of the exciting aspects of this project is the opportunity to expand my expertise. While I have experience with React for frontend development, the backend is cloud-based on AWS — a platform I am still getting familiar with. Learning AWS is something I’m actively working on, and I look forward to deepening my understanding of its services and best practices.
 
 Another challenge has been adapting to the software development landscape within the telecom industry. Unlike my previous experience in the health sector, where security and compliance were the biggest concerns, this project is still in its early stages. A major focus right now is getting the lay of the land—understanding what data is accessible, what data we need to present, and how we communicate with the business. Navigating this landscape also means identifying key stakeholders, knowing who to talk to for data access, and figuring out the best way to integrate with existing systems. Are there APIs available, or will we need to engineer them from scratch? These are the kinds of questions we are working through, making this an exciting and exploratory phase of the project.
-
 
 ## What’s Next?
 

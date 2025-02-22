@@ -1,5 +1,13 @@
 ---
-const { title, description, heroImage, postUrl } = Astro.props;
+import TagList from './TagList.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+    post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const { title, description, heroImage, tags = [] } = post.data;
 ---
 
 <style>
@@ -20,11 +28,16 @@ const { title, description, heroImage, postUrl } = Astro.props;
     width: 100%;
     height: auto;
   }
+
+  .post-tags {
+    margin: 1rem 0;
+  }
 </style>
 
 <div class="card">
-  <img src={heroImage} alt={description} />
-  <h3>{title}</h3>
-  <p>{description}</p>
-  <a href={`/blog/${postUrl}/`}>Read More</a>
+    {heroImage && <img src={heroImage} alt={description} />}
+    <h3>{title}</h3>
+    <p>{description}</p>
+    <TagList tags={tags} className="post-tags" />
+    <a href={`/blog/${post.slug}/`}>Read More</a>
 </div>

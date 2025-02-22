@@ -1,0 +1,57 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import BlogPostPreviewCard from '../../components/BlogPostPreviewCard.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
+
+export async function getStaticPaths() {
+    const posts = await getCollection('blog');
+    const tags = [...new Set(posts.flatMap(post => post.data.tags || []))];
+    
+    return tags.map(tag => ({
+        params: { tag },
+        props: {
+            posts: posts.filter(post => post.data.tags?.includes(tag)),
+            tag
+        },
+    }));
+}
+
+const { tag } = Astro.params;
+const { posts } = Astro.props;
+---
+
+<html lang="en">
+	<head>
+		<BaseHead title={`Posts tagged with #${tag} | ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<h1>Posts tagged with #{tag}</h1>
+			<section>
+				{posts.map((post) => <BlogPostPreviewCard post={post} />)}
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	main {
+		width: 960px;
+		max-width: calc(100% - 2em);
+		margin: 0 auto;
+		padding: 3em 1em;
+	}
+	h1 {
+		margin-bottom: 2em;
+	}
+	section {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+		gap: 2rem;
+	}
+</style>

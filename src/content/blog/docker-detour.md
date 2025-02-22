@@ -3,6 +3,7 @@ title: "Colima: The Docker Detour"
 description: "Overcoming Docker Desktop’s Licensing with Colima"
 pubDate: "Apr 12 2024"
 heroImage: "/blog-placeholder-3.jpg"
+tags: ["docker", "colima", "devops", "macos", "containerization"]
 ---
 
 Encountering the `cannot connect to the docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?` error is almost a rite of passage for those venturing into the world of Docker and containerization. However, you could say the real challenge begins when you face Docker Desktop’s licensing dilemma. Whether you're on a corporate machine, in an environment where Docker Desktop isn’t permitted, or simply wary of license compliance issues, finding an efficient alternative can be daunting.
