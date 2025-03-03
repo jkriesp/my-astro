@@ -11,41 +11,29 @@
 
 <style>
   #themeToggle {
-    border: 0;
-    background: none;
-    cursor: pointer;
-    padding: 0.5em;
-    opacity: 0.8;
-    transition: opacity 0.2s ease;
-    color: var(--text);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 44px;
-    min-height: 44px;
-  }
-
-  #themeToggle:hover {
-    opacity: 1;
+    @apply border-0 bg-transparent cursor-pointer p-2;
+    @apply text-gray-600 dark:text-gray-300;
+    @apply hover:text-gray-800 dark:hover:text-gray-100;
+    @apply opacity-80 hover:opacity-100 transition-all;
+    @apply flex items-center justify-center;
+    @apply min-w-[44px] min-h-[44px];
   }
 
   .sun, .moon {
-    display: none;
+    @apply hidden;
   }
 
   html[data-theme='dark'] #themeToggle .sun,
   html[data-theme='light'] #themeToggle .moon {
-    display: inline;
-    stroke: currentColor;
+    @apply block;
   }
 
   @media (max-width: 720px) {
     #themeToggle {
-      padding: 0.7em;
+      @apply p-3;
     }
     #themeToggle svg {
-      width: 28px;
-      height: 28px;
+      @apply w-7 h-7;
     }
   }
 </style>

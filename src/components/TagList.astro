@@ -14,28 +14,13 @@ const { tags, className = '' } = Astro.props;
 
 <style>
     .tag-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
+        @apply flex flex-wrap gap-2;
     }
     .tag {
-        display: inline-block;
-        padding: 0.2rem 0.8rem;
-        border-radius: 999px;
-        background-color: var(--tags-bg, #e5e7eb);
-        color: var(--tags-color, #4b5563);
-        font-size: 0.875rem;
-        text-decoration: none;
-        transition: all 0.2s;
+        @apply inline-block px-3 py-1 rounded-full text-sm transition-colors;
+        @apply bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-800;
     }
-    .tag:hover {
-        background-color: var(--tags-hover-bg, #d1d5db);
-        color: var(--tags-hover-color, #1f2937);
-    }
-    :global(.dark) .tag {
-        --tags-bg: #374151;
-        --tags-color: #d1d5db;
-        --tags-hover-bg: #4b5563;
-        --tags-hover-color: #f3f4f6;
+    :global([data-theme="dark"]) .tag {
+        @apply bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-gray-100;
     }
 </style>

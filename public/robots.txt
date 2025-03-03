@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Sitemap URL
+Sitemap: https://my-astro-4js.pages.dev/sitemap.xml
+
+# Disallow website scanning too fast
+Crawl-delay: 10
