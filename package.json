@@ -10,11 +10,18 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/check": "^0.5.10",
     "@astrojs/mdx": "^2.2.2",
     "@astrojs/rss": "^4.0.5",
-    "@astrojs/sitemap": "^3.1.2",
+    "@astrojs/sitemap": "^3.2.1",
+    "@astrojs/tailwind": "^6.0.0",
     "astro": "^4.5.12",
-    "@astrojs/check": "^0.5.10",
+    "tailwindcss": "^3.4.17",
     "typescript": "^5.4.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.16",
+    "postcss": "^8.5.3",
+    "postcss-import": "^16.1.0"
   }
 }
