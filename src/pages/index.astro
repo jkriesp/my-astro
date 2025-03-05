@@ -4,6 +4,7 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import LatestBlogPosts from "../components/LatestBlogPosts.astro";
+import AnimatedIcons from "../components/AnimatedIcons.astro";
 ---
 
 <!doctype html>
@@ -14,32 +15,129 @@ import LatestBlogPosts from "../components/LatestBlogPosts.astro";
   <body>
     <Header />
     <main>
-      <section>
-        <h1>Welcome to My Corner of the Web 🚀</h1>
+      <section class="hero-section">
+        <h1 class="animated-title">Welcome to My Corner of the Web <span class="rocket-emoji">🚀</span></h1>
       
-        <p>
-          Hey there! I'm <strong>Jens Kristian Espevik</strong>, and this site is my space on the internet—a mix of professional landing page and the occasional blog post whenever inspiration strikes. No promises of regular updates or a strict content plan, just a place where I share thoughts, experiences, and technical deep dives when I feel like it.
+        <p class="intro-paragraph">
+          Hey there! I'm <strong class="name-highlight">Jens Kristian Espevik</strong>, and this site is my space on the internet—a mix of professional landing page and the occasional blog post whenever inspiration strikes. No promises of regular updates or a strict content plan, just a place where I share thoughts, experiences, and technical deep dives when I feel like it.
         </p>
+        
+        <AnimatedIcons />
       
-        <h2>What You Might Find Here</h2>
+        <h2 class="section-title">What You Might Find Here</h2>
       
-        <ul>
-          <li><strong>Random Musings:</strong> Insights, challenges, and discoveries from my journey in software development, cloud engineering, and beyond.</li>
-          <li><strong>Tech Experiments:</strong> Notes on things I’m exploring, whether it’s Next.js, GraphQL, AWS Lambda, or whatever catches my interest.</li>
-          <li><strong>Project Snapshots:</strong> Occasional looks at personal projects—no grand showcases, just things I find interesting.</li>
-          <li><strong>Useful Resources:</strong> Links, tools, and references I’ve found helpful, shared in case they help someone else too.</li>
+        <ul class="feature-list">
+          <li class="feature-item"><strong>Random Musings:</strong> Insights, challenges, and discoveries from my journey in software development, cloud engineering, and beyond.</li>
+          <li class="feature-item"><strong>Tech Experiments:</strong> Notes on things I'm exploring, whether it's Next.js, GraphQL, AWS Lambda, or whatever catches my interest.</li>
+          <li class="feature-item"><strong>Project Snapshots:</strong> Occasional looks at personal projects—no grand showcases, just things I find interesting.</li>
+          <li class="feature-item"><strong>Useful Resources:</strong> Links, tools, and references I've found helpful, shared in case they help someone else too.</li>
         </ul>
       
-        <p>
+        <p class="outro-text">
           As you might notice, this site is a work in progress. I'm tinkering with it while getting familiar with the <strong>Astro framework</strong>. If you have any cool tips or resources about Astro, feel free to send them my way!
         </p>
       
       </section>
-      <section>
-        <h2>Latest blog entries</h2>
+      <section class="blog-section">
+        <h2 class="section-title">Latest blog entries</h2>
         <LatestBlogPosts />
       </section>
     </main>
     <Footer />
   </body>
 </html>
+
+<style>
+  .hero-section, .blog-section {
+    @apply mb-8;
+  }
+  
+  .animated-title {
+    @apply relative;
+  }
+  
+  .rocket-emoji {
+    display: inline-block;
+    transition: transform 0.3s ease;
+  }
+  
+  .animated-title:hover .rocket-emoji {
+    animation: rocketFly 1s ease-in-out;
+    transform-origin: center;
+  }
+  
+  @keyframes rocketFly {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(5deg); }
+  }
+  
+  .name-highlight {
+    position: relative;
+    padding: 0 2px;
+  }
+  
+  .name-highlight::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--accent);
+    transition: width 0.3s ease;
+  }
+  
+  .name-highlight:hover::after {
+    width: 100%;
+  }
+  
+  .intro-paragraph, .outro-text {
+    @apply my-6;
+  }
+  
+  .section-title {
+    @apply my-4 pb-2 border-b border-gray-200 dark:border-gray-700;
+    position: relative;
+  }
+  
+  .section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background-color: var(--accent);
+    transition: width 0.3s ease;
+  }
+  
+  .section-title:hover::after {
+    width: 100px;
+  }
+  
+  .feature-list {
+    @apply pl-5;
+  }
+  
+  .feature-item {
+    @apply my-2;
+    position: relative;
+    transition: all 0.2s ease;
+  }
+  
+  .feature-item::before {
+    content: '•';
+    position: absolute;
+    left: -20px;
+    color: var(--accent);
+    transition: transform 0.2s ease;
+  }
+  
+  .feature-item:hover {
+    @apply transform translate-x-1;
+  }
+  
+  .feature-item:hover::before {
+    transform: scale(1.5);
+  }
+</style>

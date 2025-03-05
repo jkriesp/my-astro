@@ -11,15 +11,22 @@ const { title, description, heroImage, tags = [] } = post.data;
 ---
 
 <div class="card">
-    {heroImage && <img src={heroImage} alt={description} />}
+    <div class="image-container">
+        {heroImage && <img src={heroImage} alt={description} />}
+        <div class="image-overlay">
+            <div class="read-indicator">
+                <a href={`/blog/${post.slug}/`} class="button-link">Read Post</a>
+            </div>
+        </div>
+    </div>
     <div class="content">
-        <h3>{title}</h3>
-        <p>{description}</p>
-        <TagList tags={tags} className="post-tags" />
-        <a href={`/blog/${post.slug}/`} class="read-more-link">
-            Read full article: {title}
-            <span class="sr-only"> - {description}</span>
-        </a>
+        <h3 class="post-title">
+            <a href={`/blog/${post.slug}/`} class="title-link">{title}</a>
+        </h3>
+        <p class="post-description">{description}</p>
+        <div class="tags-container">
+            <TagList tags={tags} className="post-tags" />
+        </div>
     </div>
 </div>
 
@@ -27,23 +34,108 @@ const { title, description, heroImage, tags = [] } = post.data;
   .card {
     @apply flex-1 min-w-[300px] max-w-md m-4 bg-white dark:bg-gray-800 rounded-lg overflow-hidden;
     @apply border border-gray-200 dark:border-gray-700;
-    @apply transition-transform duration-300 hover:-translate-y-1;
-    @apply shadow-sm hover:shadow-md;
+    @apply transition-all duration-300 ease-in-out;
+    @apply shadow-sm;
+    position: relative;
+    transform-style: preserve-3d;
+    perspective: 1000px;
   }
-
+  
+  .card:hover {
+    @apply -translate-y-2 shadow-md;
+    transform: rotateX(2deg) rotateY(0deg);
+  }
+  
+  .image-container {
+    @apply relative overflow-hidden;
+  }
+  
+  .card img {
+    @apply w-full h-auto object-cover transition-transform duration-300;
+  }
+  
+  .card:hover img {
+    transform: scale(1.05);
+  }
+  
+  .image-overlay {
+    @apply absolute inset-0 bg-black bg-opacity-0 flex items-center justify-center transition-all duration-300;
+    opacity: 0;
+  }
+  
+  .card:hover .image-overlay {
+    @apply bg-opacity-30;
+    opacity: 1;
+  }
+  
+  .read-indicator {
+    @apply px-4 py-2 bg-blue-600 text-white rounded-md transform translate-y-4 opacity-0 transition-all duration-300;
+    @apply border-0 cursor-pointer;
+  }
+  
+  .read-indicator .button-link {
+    @apply text-white no-underline font-medium;
+    display: block;
+  }
+  
+  .card:hover .read-indicator {
+    @apply translate-y-0 opacity-100;
+  }
+  
+  .read-indicator:hover {
+    @apply bg-blue-700 dark:bg-blue-500;
+    transform: scale(1.05);
+  }
+  
   .content {
     @apply p-6;
   }
-
-  .card img {
-    @apply w-full h-auto object-cover;
+  
+  .post-title {
+    @apply transition-colors duration-300;
+    position: relative;
+    display: inline-block;
+  }
+  
+  .post-title .title-link {
+    @apply text-inherit no-underline;
+    display: block;
+  }
+  
+  .post-title::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    @apply bg-blue-600 dark:bg-blue-400;
+    transition: width 0.3s ease;
+  }
+  
+  .card:hover .post-title::after {
+    width: 100%;
+  }
+  
+  .post-description {
+    @apply mt-2 transition-all duration-300;
   }
 
+  .tags-container {
+    @apply mt-4 mb-2 pt-2 pb-2;
+  }
+  
   .sr-only {
     @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0;
   }
-
-  .read-more-link {
-    @apply block mt-4;
+  
+  @media (max-width: 640px) {
+    .card {
+      @apply min-w-[250px] m-2;
+    }
+    
+    .content {
+      @apply p-4;
+    }
   }
 </style>

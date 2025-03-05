@@ -28,15 +28,58 @@
 
 @layer components {
   .prose {
-    @apply max-w-[65ch] mx-auto text-base leading-7;
+    @apply max-w-[65ch] mx-auto text-lg leading-7;
   }
 
   .tag {
     @apply inline-block px-3 py-1 rounded-full text-sm transition-colors;
     @apply bg-gray-100 text-gray-700 hover:bg-gray-200;
+    @apply transform transition-all duration-200 hover:-translate-y-0.5;
     [data-theme="dark"] & {
       @apply bg-gray-700 text-gray-200 hover:bg-gray-600;
     }
+  }
+
+  /* Animation keyframes for micro-interactions */
+  @keyframes pulse {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+  }
+
+  @keyframes slideInUnderline {
+    from {
+      width: 0;
+    }
+    to {
+      width: 100%;
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* Button animation class */
+  .btn-animate {
+    @apply relative overflow-hidden transition-all duration-200;
+  }
+
+  .btn-animate:hover {
+    @apply transform -translate-y-0.5;
+  }
+
+  .btn-animate:active {
+    @apply transform translate-y-0;
   }
 }
 
@@ -80,11 +123,15 @@ h3,
 h4,
 h5,
 h6 {
-  @apply mb-2 text-gray-900 dark:text-gray-50 leading-tight;
+  @apply text-gray-900 dark:text-gray-50 leading-tight;
+  /* Reduced default margins for all headings */
+  margin-top: 1.5em;
+  margin-bottom: 0.7em;
 }
 
 h1 {
   @apply text-[3.052em];
+  animation: fadeIn 0.8s ease-out;
 }
 h2 {
   @apply text-[2.441em];
@@ -106,6 +153,23 @@ b {
 
 a {
   @apply text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300;
+  @apply relative transition-all duration-300 ease-in-out;
+}
+
+/* Fancy link underline effect */
+a:not(.tag):not(.btn-animate) {
+  @apply relative;
+}
+
+a:not(.tag):not(.btn-animate)::after {
+  content: "";
+  @apply absolute bottom-0 left-0 h-0.5 bg-blue-600 dark:bg-blue-400;
+  width: 0;
+  transition: width 0.3s ease;
+}
+
+a:not(.tag):not(.btn-animate):hover::after {
+  width: 100%;
 }
 
 code {
@@ -127,4 +191,58 @@ pre code {
   clip: rect(1px, 1px, 1px, 1px);
   clip-path: inset(50%);
   white-space: nowrap;
+}
+
+/* Blog post specific heading styles */
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  /* More compact margins for blog post headings */
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+}
+
+/* First heading in a blog post should have less top margin */
+.prose > h1:first-child,
+.prose > h2:first-child,
+.prose > h3:first-child,
+.prose > h4:first-child {
+  margin-top: 0.7em;
+}
+
+/* Animation for page elements */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+section {
+  animation: slideUp 0.5s ease-out forwards;
+}
+
+section:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+/* Button styles with hover effects */
+button:not(#themeToggle) {
+  @apply transition-all duration-200 transform hover:-translate-y-0.5 hover:shadow-md;
+}
+
+/* List item hover effects */
+ul li {
+  @apply transition-all duration-200;
+}
+
+ul li:hover {
+  @apply transform translate-x-1;
 }

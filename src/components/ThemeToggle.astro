@@ -18,16 +18,27 @@
     @apply flex items-center justify-center;
     @apply min-w-[44px] min-h-[44px];
   }
-
+  
+  #themeToggle:hover svg {
+    transform: scale(1.15);
+  }
+  
+  #themeToggle svg {
+    transition: transform 0.2s ease, opacity 0.3s ease;
+  }
+  
   .sun, .moon {
     @apply hidden;
+    opacity: 0;
+    transition: opacity 0.5s ease;
   }
-
+  
   html[data-theme='dark'] #themeToggle .sun,
   html[data-theme='light'] #themeToggle .moon {
     @apply block;
+    opacity: 1;
   }
-
+  
   @media (max-width: 720px) {
     #themeToggle {
       @apply p-3;
@@ -44,7 +55,32 @@
     const isDark = element.getAttribute('data-theme') === 'dark';
     const newTheme = isDark ? 'light' : 'dark';
     
+    // Add animation class
+    const toggleButton = document.getElementById('themeToggle');
+    toggleButton.classList.add('rotating');
+    
+    // Remove class after animation completes
+    setTimeout(() => {
+      toggleButton.classList.remove('rotating');
+    }, 500);
+    
     element.setAttribute('data-theme', newTheme);
     localStorage.setItem('theme', newTheme);
   });
+  
+  // Add the animation keyframe
+  if (!document.querySelector('#themeToggleStyle')) {
+    const style = document.createElement('style');
+    style.id = 'themeToggleStyle';
+    style.textContent = `
+      @keyframes rotate {
+        0% { transform: rotate(0); }
+        100% { transform: rotate(360deg); }
+      }
+      .rotating svg {
+        animation: rotate 0.5s ease-in-out;
+      }
+    `;
+    document.head.appendChild(style);
+  }
 </script>
