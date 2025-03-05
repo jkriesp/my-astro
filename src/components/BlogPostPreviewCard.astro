@@ -30,6 +30,35 @@ const { title, description, heroImage, tags = [] } = post.data;
     </div>
 </div>
 
+<script>
+  // Only run this script on mobile devices
+  const isMobile = window.innerWidth < 768;
+  
+  if (isMobile) {
+    document.addEventListener('DOMContentLoaded', () => {
+      const cards = document.querySelectorAll('.card');
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          // When card is 40% visible in the viewport
+          if (entry.isIntersecting && entry.intersectionRatio > 0.4) {
+            entry.target.classList.add('mobile-in-view');
+          } else {
+            entry.target.classList.remove('mobile-in-view');
+          }
+        });
+      }, {
+        threshold: [0.4], // Trigger when 40% visible
+        rootMargin: '0px' // No margin
+      });
+      
+      cards.forEach(card => {
+        observer.observe(card);
+      });
+    });
+  }
+</script>
+
 <style>
   .card {
     @apply flex-1 min-w-[300px] max-w-md m-4 bg-white dark:bg-gray-800 rounded-lg overflow-hidden;
@@ -66,6 +95,18 @@ const { title, description, heroImage, tags = [] } = post.data;
   .card:hover .image-overlay {
     @apply bg-opacity-30;
     opacity: 1;
+  }
+  
+  /* Mobile in-view styles (for scroll-based appearance) */
+  @media (max-width: 767px) {
+    .mobile-in-view .image-overlay {
+      @apply bg-opacity-30;
+      opacity: 1;
+    }
+    
+    .mobile-in-view .read-indicator {
+      @apply translate-y-0 opacity-100;
+    }
   }
   
   .read-indicator {
