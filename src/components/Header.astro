@@ -94,11 +94,12 @@ import { SITE_TITLE } from "../consts";
 </style>
 
 <script>
-  // Add subtle animation to header links
+  // Add subtle animation to header links but skip active links
   const headerLinks = document.querySelectorAll('.internal-links a');
   
   headerLinks.forEach(link => {
     link.addEventListener('mouseenter', (e) => {
+      // Only apply hover effect if link is not active
       if (!link.classList.contains('active')) {
         (link as HTMLElement).style.transition = 'transform 0.2s ease-out';
         (link as HTMLElement).style.transform = 'translateY(-2px)';
@@ -106,7 +107,10 @@ import { SITE_TITLE } from "../consts";
     });
     
     link.addEventListener('mouseleave', (e) => {
-      (link as HTMLElement).style.transform = 'translateY(0)';
+      // Only reset transform if link is not active
+      if (!link.classList.contains('active')) {
+        (link as HTMLElement).style.transform = 'translateY(0)';
+      }
     });
   });
 </script>

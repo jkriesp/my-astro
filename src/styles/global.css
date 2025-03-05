@@ -28,7 +28,7 @@
 
 @layer components {
   .prose {
-    @apply max-w-[65ch] mx-auto text-base leading-7;
+    @apply max-w-[65ch] mx-auto text-lg leading-7;
   }
 
   .tag {
@@ -123,7 +123,10 @@ h3,
 h4,
 h5,
 h6 {
-  @apply mb-2 text-gray-900 dark:text-gray-50 leading-tight;
+  @apply text-gray-900 dark:text-gray-50 leading-tight;
+  /* Reduced default margins for all headings */
+  margin-top: 1.5em;
+  margin-bottom: 0.7em;
 }
 
 h1 {
@@ -188,6 +191,26 @@ pre code {
   clip: rect(1px, 1px, 1px, 1px);
   clip-path: inset(50%);
   white-space: nowrap;
+}
+
+/* Blog post specific heading styles */
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  /* More compact margins for blog post headings */
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+}
+
+/* First heading in a blog post should have less top margin */
+.prose > h1:first-child,
+.prose > h2:first-child,
+.prose > h3:first-child,
+.prose > h4:first-child {
+  margin-top: 0.7em;
 }
 
 /* Animation for page elements */

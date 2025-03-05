@@ -1,0 +1,97 @@
+---
+import { getCollection } from 'astro:content';
+import BlogPostPreviewCard from './BlogPostPreviewCard.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  currentPostSlug: string;
+  tags?: string[];
+  limit?: number;
+}
+
+const { currentPostSlug, tags = [], limit = 3 } = Astro.props;
+
+// Get all blog posts except the current one
+const allPosts = await getCollection('blog');
+const otherPosts = allPosts.filter(post => post.slug !== currentPostSlug);
+
+// Find posts with similar tags
+let relatedPosts: CollectionEntry<'blog'>[] = [];
+
+if (tags.length > 0) {
+  // Sort posts by tag relevance (number of matching tags)
+  relatedPosts = otherPosts
+    .map(post => {
+      const postTags = post.data.tags || [];
+      const matchingTags = tags.filter(tag => postTags.includes(tag));
+      return { post, relevance: matchingTags.length };
+    })
+    .filter(item => item.relevance > 0)  // Only include posts with at least one matching tag
+    .sort((a, b) => b.relevance - a.relevance) // Sort by most matching tags
+    .map(item => item.post)
+    .slice(0, limit);
+}
+
+// If we don't have enough related posts by tags, add recent posts
+if (relatedPosts.length < limit) {
+  const recentPosts = otherPosts
+    .filter(post => !relatedPosts.some(rp => rp.slug === post.slug))
+    .sort((a, b) => new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime())
+    .slice(0, limit - relatedPosts.length);
+  
+  relatedPosts = [...relatedPosts, ...recentPosts];
+}
+---
+
+{relatedPosts.length > 0 && (
+  <section class="related-posts">
+    <h2 class="section-title">Continue Reading</h2>
+    <p class="section-description">You might also enjoy these posts:</p>
+    <div class="posts-grid">
+      {relatedPosts.map(post => (
+        <BlogPostPreviewCard post={post} />
+      ))}
+    </div>
+  </section>
+)}
+
+<style>
+  .related-posts {
+    @apply mt-12 pt-8 border-t border-gray-200 dark:border-gray-700;
+  }
+
+  .section-title {
+    @apply text-2xl font-bold mb-2 text-center;
+    position: relative;
+  }
+
+  .section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    width: 60px;
+    height: 3px;
+    background-color: var(--accent);
+    transform: translateX(-50%);
+    transition: width 0.3s ease;
+  }
+
+  .section-title:hover::after {
+    width: 100px;
+  }
+
+  .section-description {
+    @apply text-center mb-6 text-gray-600 dark:text-gray-400;
+  }
+
+  .posts-grid {
+    @apply flex flex-wrap justify-center gap-6;
+  }
+
+  @media (max-width: 768px) {
+    .posts-grid {
+      @apply flex-col items-center;
+    }
+  }
+</style>
