@@ -1,18 +1,46 @@
 ---
 import TagList from './TagList.astro';
 import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+// Import placeholder images
+import placeholder1 from '../images/blog-placeholder-1.jpg';
+import placeholder2 from '../images/blog-placeholder-2.jpg';
+import placeholder3 from '../images/blog-placeholder-3.jpg';
+import placeholder4 from '../images/blog-placeholder-4.jpg';
+import placeholder5 from '../images/blog-placeholder-5.jpg';
+import placeholderAbout from '../images/blog-placeholder-about.jpg';
 
 interface Props {
     post: CollectionEntry<'blog'>;
 }
-
 const { post } = Astro.props;
 const { title, description, heroImage, tags = [] } = post.data;
----
 
+// Map hero image paths to the imported image objects
+const heroImageMap = {
+  '/blog-placeholder-1.jpg': placeholder1,
+  '/blog-placeholder-2.jpg': placeholder2,
+  '/blog-placeholder-3.jpg': placeholder3,
+  '/blog-placeholder-4.jpg': placeholder4,
+  '/blog-placeholder-5.jpg': placeholder5,
+  '/blog-placeholder-about.jpg': placeholderAbout
+};
+
+// Get the appropriate image based on the heroImage path
+const imageSource = heroImage ? heroImageMap[heroImage as keyof typeof heroImageMap] : undefined;
+---
 <div class="card">
     <div class="image-container">
-        {heroImage && <img src={heroImage} alt={description} />}
+        {imageSource && (
+          <Image 
+            src={imageSource} 
+            alt={description || title}
+            width={600}
+            height={400}
+            class="card-image"
+            quality={80}
+          />
+        )}
         <div class="image-overlay">
             <div class="read-indicator">
                 <a href={`/blog/${post.slug}/`} class="button-link">Read Post</a>
@@ -79,11 +107,11 @@ const { title, description, heroImage, tags = [] } = post.data;
     @apply relative overflow-hidden;
   }
   
-  .card img {
+  .card-image {
     @apply w-full h-auto object-cover transition-transform duration-300;
   }
   
-  .card:hover img {
+  .card:hover .card-image {
     transform: scale(1.05);
   }
   
