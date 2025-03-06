@@ -6,6 +6,8 @@ heroImage: "/blog-placeholder-5.jpg"
 tags: ["kubernetes", "k3s", "multipass", "devops", "virtualization", "tutorial"]
 ---
 
+import CodeBlock from '../../components/CodeBlock.astro';
+
 This guide will walk you through the process of setting up a k3s Kubernetes cluster on Multipass, from creating the virtual machines to deploying k3s and joining the worker nodes to the control plane. The goal is to have an Kubernetes cluster that you can experiment and break without consequence.
 
 ## Introduction
@@ -18,16 +20,17 @@ After encountering issues with network configurations using Minikube inside Mult
 
 Before creating virtual machines, it's useful to know what images are available:
 
-```bash
-multipass find
-```
+<CodeBlock
+  code={`multipass find`}
+  lang="bash"
+  title="List available Multipass images"
+/>
 
-```bash
-Image                       Aliases           Version          Description
+<CodeBlock
+  code={`Image                       Aliases           Version          Description
 20.04                       focal             20240408         Ubuntu 20.04 LTS
 22.04                       jammy,lts         20240319         Ubuntu 22.04 LTS
 23.10                       mantic            20240410         Ubuntu 23.10
-
 Blueprint                   Aliases           Version          Description
 anbox-cloud-appliance                         latest           Anbox Cloud Appliance
 charm-dev                                     latest           A development and testing environment for charmers
@@ -35,21 +38,23 @@ docker                                        0.4              A Docker environm
 jellyfin                                      latest           Jellyfin is a Free Software Media System that puts you in control of managing and streaming your media.
 minikube                                      latest           minikube is local Kubernetes
 ros-noetic                                    0.1              A development and testing environment for ROS Noetic.
-ros2-humble                                   0.1              A development and testing environment for ROS 2 Humble.
-```
+ros2-humble                                   0.1              A development and testing environment for ROS 2 Humble.`}
+  lang="text"
+/>
 
 ### Creating VMs
 
 Create one control node and two worker nodes using Ubuntu 23.10:
 
-```bash
-# Create the control node
+<CodeBlock
+  code={`# Create the control node
 multipass launch -c 1 -m 1g -d 4g -n k3s-control 23.10
-
 # Create worker nodes
 multipass launch -c 1 -m 1g -d 4g -n k3s-worker-1 23.10
-multipass launch -c 1 -m 1g -d 4g -n k3s-worker-2 23.10
-```
+multipass launch -c 1 -m 1g -d 4g -n k3s-worker-2 23.10`}
+  lang="bash"
+  title="Creating Multipass VMs"
+/>
 
 **Flags Explanation:**
 
@@ -62,16 +67,19 @@ multipass launch -c 1 -m 1g -d 4g -n k3s-worker-2 23.10
 
 Ensure all nodes are running:
 
-```bash
-multipass list
-```
+<CodeBlock
+  code={`multipass list`}
+  lang="bash"
+  title="Check VM status"
+/>
 
-```bash
-Name                    State             IPv4             Image
+<CodeBlock
+  code={`Name                    State             IPv4             Image
 k3s-control             Running           192.168.64.16    Ubuntu 23.10
 k3s-worker-1            Running           192.168.64.17    Ubuntu 23.10
-k3s-worker-2            Running           192.168.64.19    Ubuntu 23.10
-```
+k3s-worker-2            Running           192.168.64.19    Ubuntu 23.10`}
+  lang="text"
+/>
 
 ## Deploying k3s
 
@@ -79,66 +87,74 @@ k3s-worker-2            Running           192.168.64.19    Ubuntu 23.10
 
 Run the k3s installation script on the control node:
 
-```bash
-multipass exec k3s-control -- bash -c "curl -sfL https://get.k3s.io | sh -"
-```
+<CodeBlock
+  code={`multipass exec k3s-control -- bash -c "curl -sfL https://get.k3s.io | sh -"`}
+  lang="bash"
+  title="Install k3s on control node"
+/>
 
 ### Set Up Node Token and IP Environment Variables
 
 Retrieve and save the node token and IP address of the control node:
 
-```bash
-# Save the token
+<CodeBlock
+  code={`# Save the token
 TOKEN=$(multipass exec k3s-control sudo cat /var/lib/rancher/k3s/server/node-token)
-
 # Save the IP address
-IP=$(multipass info k3s-control | grep IPv4 | awk '{print $2}')
-```
+IP=$(multipass info k3s-control | grep IPv4 | awk '{print $2}')`}
+  lang="bash"
+  title="Get node token and IP"
+/>
 
 ### Configure Worker Nodes
 
 Create a bash script to join the worker nodes to the cluster:
 
-```bash
-#!/bin/bash
-
+<CodeBlock
+  code={`#!/bin/bash
 # Assign passed arguments to variables
 IP=$1
 TOKEN=$2
-
 for f in 1 2; do
-    multipass exec k3s-worker-$f -- bash -c "curl -sfL https://get.k3s.io | K3S_URL='https://${IP}:6443' K3S_TOKEN='${TOKEN}' sh -" &
+    multipass exec k3s-worker-$f -- bash -c "curl -sfL https://get.k3s.io | K3S_URL='https://\${IP}:6443' K3S_TOKEN='\${TOKEN}' sh -" &
 done
-wait
-```
+wait`}
+  lang="bash"
+  title="Worker node setup script"
+/>
 
 Run the script with IP and token:
 
-```bash
-./install_k3s_workers.sh $IP $TOKEN
-```
+<CodeBlock
+  code={`./install_k3s_workers.sh $IP $TOKEN`}
+  lang="bash"
+  title="Join worker nodes to the cluster"
+/>
 
 ### Verifying the Cluster
 
 Log in to the control node and check the cluster nodes:
 
-```bash
-multipass exec k3s-control -- bash
-sudo kubectl get nodes
-```
+<CodeBlock
+  code={`multipass exec k3s-control -- bash
+sudo kubectl get nodes`}
+  lang="bash"
+  title="Verify cluster nodes"
+/>
 
 ## Clean Up
 
 When done, you can stop and delete your instances:
 
-```bash
-# Stop instances
+<CodeBlock
+  code={`# Stop instances
 multipass stop k3s-control k3s-worker-1 k3s-worker-2
-
 # Delete instances
 multipass delete k3s-control k3s-worker-1 k3s-worker-2
-multipass purge
-```
+multipass purge`}
+  lang="bash"
+  title="Cleanup resources"
+/>
 
 ## Where to Go From Here
 
