@@ -1,19 +1,20 @@
 ---
 // CodeBlock.astro - An enhanced code block component using Astro's built-in syntax highlighter
 import { Code } from 'astro:components';
+import type { BundledLanguage } from 'shiki';
 
 interface Props {
   code: string;
-  lang?: string;
+  lang?: BundledLanguage;
   title?: string;
   wrap?: boolean;
   lineNumbers?: boolean;
-  theme?: string;
+  theme?: 'css-variables' | 'light-plus' | 'nord' | 'min-dark' | 'min-light' | 'github-dark' | 'github-light';
 }
 
 const {
   code,
-  lang = 'text',
+  lang = 'plaintext',
   title,
   wrap = false,
   lineNumbers = false,

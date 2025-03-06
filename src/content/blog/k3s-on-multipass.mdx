@@ -6,7 +6,7 @@ heroImage: "/blog-placeholder-5.jpg"
 tags: ["kubernetes", "k3s", "multipass", "devops", "virtualization", "tutorial"]
 ---
 
-import CodeBlock from '../../components/CodeBlock.astro';
+import CodeBlock from "../../components/CodeBlock.astro";
 
 This guide will walk you through the process of setting up a k3s Kubernetes cluster on Multipass, from creating the virtual machines to deploying k3s and joining the worker nodes to the control plane. The goal is to have an Kubernetes cluster that you can experiment and break without consequence.
 
@@ -67,11 +67,7 @@ multipass launch -c 1 -m 1g -d 4g -n k3s-worker-2 23.10`}
 
 Ensure all nodes are running:
 
-<CodeBlock
-  code={`multipass list`}
-  lang="bash"
-  title="Check VM status"
-/>
+<CodeBlock code={`multipass list`} lang="bash" title="Check VM status" />
 
 <CodeBlock
   code={`Name                    State             IPv4             Image
