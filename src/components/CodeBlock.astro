@@ -1,0 +1,47 @@
+---
+// CodeBlock.astro - An enhanced code block component using Astro's built-in syntax highlighter
+import { Code } from 'astro:components';
+import type { BundledLanguage } from 'shiki';
+
+interface Props {
+  code: string;
+  lang?: BundledLanguage;
+  title?: string;
+  wrap?: boolean;
+  lineNumbers?: boolean;
+  theme?: 'css-variables' | 'light-plus' | 'nord' | 'min-dark' | 'min-light' | 'github-dark' | 'github-light';
+}
+
+const {
+  code,
+  lang = 'plaintext',
+  title,
+  wrap = false,
+  lineNumbers = false,
+  theme = 'github-dark',
+} = Astro.props;
+---
+
+<div class={`code-block ${wrap ? 'wrap' : ''}`}>
+  {title && <div class="code-title">{title}</div>}
+  <Code 
+    code={code} 
+    lang={lang}
+    theme={theme}
+    wrap={wrap}
+  />
+</div>
+
+<style>
+  .code-block {
+    @apply my-6 rounded-lg overflow-hidden;
+    box-shadow: var(--box-shadow);
+  }
+  
+  .code-title {
+    @apply py-2 px-4 font-mono text-sm border-b;
+    background-color: var(--code-bg);
+    color: var(--code-text);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+</style>

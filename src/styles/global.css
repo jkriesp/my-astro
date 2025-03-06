@@ -12,6 +12,8 @@
     --text-header: theme("colors.gray.800");
     --gray-gradient: theme("colors.gray.100"), var(--background);
     --code-bg: theme("colors.gray.100");
+    --code-text: theme("colors.gray.800");
+    --box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   }
 
   [data-theme="dark"] {
@@ -23,6 +25,8 @@
     --text-header: theme("colors.gray.100");
     --gray-gradient: theme("colors.gray.800"), var(--background);
     --code-bg: theme("colors.gray.800");
+    --code-text: theme("colors.gray.200");
+    --box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   }
 }
 
