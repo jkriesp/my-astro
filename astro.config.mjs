@@ -7,4 +7,10 @@ import tailwind from "@astrojs/tailwind";
 export default defineConfig({
   site: "https://my-astro-4js.pages.dev",
   integrations: [mdx(), tailwind(), sitemap()],
+  image: {
+    // Image optimization options
+    service: {
+      entrypoint: "astro/assets/services/sharp",
+    },
+  },
 });

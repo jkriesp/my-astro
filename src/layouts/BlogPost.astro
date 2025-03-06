@@ -6,6 +6,15 @@ import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import TagList from '../components/TagList.astro';
 import RelatedPosts from '../components/RelatedPosts.astro';
+import { Image } from 'astro:assets';
+
+// Import placeholder images
+import placeholder1 from '../images/blog-placeholder-1.jpg';
+import placeholder2 from '../images/blog-placeholder-2.jpg';
+import placeholder3 from '../images/blog-placeholder-3.jpg';
+import placeholder4 from '../images/blog-placeholder-4.jpg';
+import placeholder5 from '../images/blog-placeholder-5.jpg';
+import placeholderAbout from '../images/blog-placeholder-about.jpg';
 
 type Props = CollectionEntry<'blog'> | {
   title: string;
@@ -22,6 +31,19 @@ const { title, description, pubDate, updatedDate, heroImage, tags = [] } =
   'data' in props ? props.data : props;
 const slug = 'slug' in props ? props.slug : '';
 const Content = 'render' in props ? (await props.render()).Content : null;
+
+// Map hero image paths to the imported image objects
+const heroImageMap = {
+  '/blog-placeholder-1.jpg': placeholder1,
+  '/blog-placeholder-2.jpg': placeholder2,
+  '/blog-placeholder-3.jpg': placeholder3,
+  '/blog-placeholder-4.jpg': placeholder4,
+  '/blog-placeholder-5.jpg': placeholder5,
+  '/blog-placeholder-about.jpg': placeholderAbout
+};
+
+// Get the appropriate image based on the heroImage path
+const imageSource = heroImage ? heroImageMap[heroImage as keyof typeof heroImageMap] : undefined;
 ---
 
 <html lang="en">
@@ -115,7 +137,16 @@ const Content = 'render' in props ? (await props.render()).Content : null;
 		<main>
 			<article>
 				<div class="hero-image">
-					{heroImage && <img width={1020} height={510} src={heroImage} alt="" />}
+						{imageSource && (
+						<Image 
+							src={imageSource}
+							alt={`Hero image for ${title}`} 
+							width={1020} 
+							height={510}
+							quality={90}
+							class="hero-img"
+						/>
+					)}
 				</div>
 				<div class="prose">
 					<div class="title">
@@ -149,6 +180,13 @@ const Content = 'render' in props ? (await props.render()).Content : null;
 				max-width: 1200px;
 				margin: 0 auto;
 				padding: 0 1em;
+			}
+			
+			.hero-img {
+				display: block;
+				margin: 0 auto;
+				border-radius: 12px;
+				box-shadow: var(--box-shadow);
 			}
 		</style>
 	</body>
