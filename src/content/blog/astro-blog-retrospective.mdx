@@ -1,0 +1,158 @@
+---
+title: "Astro Blog Retrospective: Building and Expanding"
+description: "Reflections on building my personal blog with Astro, with a focus on image optimization and preview cards."
+pubDate: "Mar 30 2025"
+heroImage: "/blog-placeholder-1.jpg"
+tags: ["Astro", "JavaScript", "Web Development"]
+---
+
+import CodeBlock from '../../components/CodeBlock.astro';
+
+## Introduction
+
+Ever since I migrated my personal blog to **Astro**, I've enjoyed the simplicity and speed it provides for static sites. In this post, I'll reflect on some of the key features I set up—especially the **Blog Post Preview** cards—and discuss a gotcha I faced with Astro's built-in image optimization. I'll also explore a few ideas on how I plan to expand this project in the future.
+
+## Why Astro?
+
+I was drawn to Astro because it:
+- Separates content from framework overhead, giving faster page loads.
+- Lets me pick and choose frameworks (or none at all) for specific parts of the site.
+- Provides a zero-JS-by-default approach, meaning I only ship JavaScript for components that actually need it.
+
+This all made my blog lighter and simpler to maintain.
+
+## Blog Post Previews
+
+A big piece of building an engaging blog is how posts are displayed. In my setup, I use a component called `BlogPostPreviewCard.astro`:
+
+<CodeBlock
+code={`---
+// BlogPostPreviewCard.astro (relevant excerpt)
+import TagList from './TagList.astro';
+import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+// Import placeholder images
+import placeholder1 from '../images/blog-placeholder-1.jpg';
+import placeholder2 from '../images/blog-placeholder-2.jpg';
+// ...other imports
+
+interface Props {
+    post: CollectionEntry<'blog'>;
+}
+const { post } = Astro.props;
+const { title, description, heroImage, tags = [] } = post.data;
+
+// Map hero image paths to the imported image objects
+const heroImageMap = {
+  '/blog-placeholder-1.jpg': placeholder1,
+  '/blog-placeholder-2.jpg': placeholder2,
+  // ...other mappings
+};
+
+// Get the appropriate image based on the heroImage path
+const imageSource = heroImage ? heroImageMap[heroImage as keyof typeof heroImageMap] : undefined;
+---
+<div class="card">
+    <div class="image-container">
+        {imageSource && (
+          <Image 
+            src={imageSource} 
+            alt={description || title}
+            width={600}
+            height={400}
+            class="card-image"
+            quality={80}
+          />
+        )}
+        <div class="image-overlay">
+            <div class="read-indicator">
+                <a href={\`/blog/\${post.slug}/\`} class="button-link">Read Post</a>
+            </div>
+        </div>
+    </div>
+    <!-- Content section with title, description, and tags -->
+</div>`}
+lang="astro"
+title="BlogPostPreviewCard.astro component"
+/>
+
+You can see a few important things here:
+
+1. **`<Image>` from `astro:assets`:** This gave me automatic image optimization once I wired up the correct imports and references.  
+2. **Hover & Overlay Effects:** I added a subtle overlay that reveals a "Read Post" call to action.  
+3. **Tagging:** The `TagList` component ties everything together by letting me filter or categorize posts later if needed.
+
+## The Image Optimization Gotcha
+
+One surprise I ran into was that **Astro's default blog template** I started with didn't inherently account for `astro:assets`. It used static `<img>` tags by default, so the images weren't being optimized on the fly. 
+
+### How I Solved It
+
+The solution required three key steps:
+
+<CodeBlock
+code={`// Step 1: Import the images
+import placeholder1 from '../images/blog-placeholder-1.jpg';
+import placeholder2 from '../images/blog-placeholder-2.jpg';
+// ...
+
+// Step 2: Create a mapping from string paths to imported images
+const heroImageMap = {
+  '/blog-placeholder-1.jpg': placeholder1,
+  '/blog-placeholder-2.jpg': placeholder2,
+  // ...
+};
+
+// Step 3: Use the imported image with Astro's Image component
+const imageSource = heroImage ? 
+  heroImageMap[heroImage as keyof typeof heroImageMap] : 
+  undefined;
+
+// Later in the JSX:
+{imageSource && (
+  <Image 
+    src={imageSource} 
+    alt={description || title}
+    width={600}
+    height={400}
+    class="card-image"
+    quality={80}
+  />
+)}`}
+lang="typescript"
+title="Image optimization solution"
+/>
+
+This approach offers several advantages:
+- Images are properly optimized during build time
+- We get automatic WebP format conversion when supported by browsers
+- We can control dimensions and quality consistently across all previews
+- The browser gets properly sized images rather than downloading full-size ones
+
+## Retrospective
+
+I'm **really happy** with the performance benefits so far—pages load quickly, and adding new blog posts is straightforward. Some highlights include:
+
+- **Simpler Routing:** Using Astro's file-based routing for new posts.  
+- **Custom Components:** Like `CodeBlock.astro` and `TagList.astro`, they're easy to drop into any post.  
+- **Dark Mode Toggle:** A small `ThemeToggle.astro` which gives a clean dark/light theme switch.  
+
+**If you're considering Astro,** just be aware that some of the official starter templates might not be fully configured for every advanced feature. You may need to wire up things like image optimization yourself if you want to do more than the basics.
+
+## Looking Ahead
+
+Here are a few areas I'm planning to explore or improve:
+
+1. **More Dynamic Tag Pages:** Right now, my tags are basic links. I might build out a dedicated tag index page, showing related posts, so readers can quickly dive into topics.  
+2. **Advanced Image Handling:** For truly large images or advanced use cases, exploring additional options like lazy-loading or WebP conversions might improve page speeds even more.  
+3. **Additional Integrations:** Possibly hooking in an RSS feed or a comment system so readers can subscribe or interact more directly with posts.  
+4. **Analytics and Performance Monitoring:** While Astro is pretty quick, I'd like to set up some lightweight monitoring to confirm real-world speed and track what's popular.
+
+## Conclusion
+
+Moving my blog to **Astro** has been a gratifying project. The combination of minimal JavaScript, flexible file-based routing, and easy content creation has helped me focus more on writing rather than wrestling with complex configurations.
+
+- **Gotchas:** Remember to switch to `<Image />` from `astro:assets` if you want built-in optimization.  
+- **Future Plans:** Expect more dynamic tagging, performance refinements, and possibly new ways for readers to interact with each post.
+
+If you're thinking about starting a similar journey, go for it—Astro is a breath of fresh air compared to heavier, monolithic frameworks. Just keep an eye on the details like image optimization so you can get the most out of what Astro has to offer!
