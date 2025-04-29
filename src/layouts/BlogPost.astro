@@ -136,7 +136,7 @@ const imageSource = heroImage ? heroImageMap[heroImage as keyof typeof heroImage
 	<body>
 		<Header />
 		<main>
-			<article>
+			<article class={slug ? 'blog-post' : ''}>
 				<div class="hero-image">
 						{imageSource && (
 						<Image 
