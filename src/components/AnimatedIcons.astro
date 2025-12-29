@@ -57,7 +57,7 @@
   .icon-link {
     display: inline-block;
   }
-  
+
   /* Override any transform effects from btn-animate class */
   .icon-link.btn-animate:hover {
     transform: none;
@@ -66,56 +66,75 @@
   .icon-wrapper {
     @apply flex items-center justify-center;
     @apply w-12 h-12 rounded-full;
-    @apply bg-gray-100 text-blue-600 dark:bg-gray-700 dark:text-blue-400;
-    @apply transition-all duration-300;
     position: relative;
     cursor: pointer;
+    transition: all 0.4s ease;
+  }
+
+  /* Each icon gets a different muted pastel color */
+  .rocket-icon {
+    background-color: var(--gradient-start); /* lavender */
+    color: var(--accent-primary);
+  }
+
+  .cloud-icon {
+    background-color: var(--gradient-end); /* powder blue */
+    color: var(--accent-tertiary);
+  }
+
+  .code-icon {
+    background-color: #e8ede8; /* sage-100 */
+    color: var(--accent-secondary);
+  }
+
+  .server-icon {
+    background-color: #f9eeee; /* blush-100 */
+    color: #c68080; /* blush-500 */
   }
 
   .icon-wrapper:hover {
-    @apply shadow-md transform scale-110;
+    transform: scale(1.05);
+    opacity: 0.9;
+    box-shadow: 0 4px 12px var(--box-shadow);
   }
 
-  /* Rocket animation */
+  /* Refined subtle animations */
   .rocket-icon:hover svg {
-    animation: rocketShake 0.8s ease-in-out infinite;
+    animation: gentleLift 0.6s ease-in-out;
   }
 
-  @keyframes rocketShake {
+  @keyframes gentleLift {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-5px); }
+    50% { transform: translateY(-3px); }
   }
 
-  /* Cloud animation */
+  /* Cloud gentle scale */
   .cloud-icon svg {
-    transition: all 0.5s ease;
+    transition: all 0.4s ease;
   }
 
   .cloud-icon:hover svg {
-    transform: scale(1.1);
-    filter: drop-shadow(0 0 3px currentColor);
+    transform: scale(1.05);
+    opacity: 0.9;
   }
 
-  /* Code animation */
+  /* Code subtle fade */
+  .code-icon svg {
+    transition: all 0.4s ease;
+  }
+
   .code-icon:hover svg {
-    animation: codeTyping 1s ease infinite;
+    opacity: 0.85;
   }
 
-  @keyframes codeTyping {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-2px); }
-    75% { transform: translateX(2px); }
-  }
-
-  /* Server animation */
+  /* Server gentle opacity */
   .server-icon:hover svg {
-    animation: serverPulse 1.5s ease infinite;
+    animation: gentleFade 1s ease;
   }
 
-  @keyframes serverPulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.7; }
-    100% { opacity: 1; }
+  @keyframes gentleFade {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.85; }
   }
 </style>
 

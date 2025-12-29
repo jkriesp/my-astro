@@ -66,7 +66,7 @@ const imageSource = heroImage ? heroImageMap[heroImage as keyof typeof heroImage
 				max-width: calc(100% - 2em);
 				margin: auto;
 				padding: 1em;
-				color: var(--text);
+				@apply text-gray-600 dark:text-gray-300;
 			}
 			/* Make text area wider on mobile screens */
 			@media (max-width: 768px) {
@@ -83,11 +83,11 @@ const imageSource = heroImage ? heroImageMap[heroImage as keyof typeof heroImage
 			}
 			.title h1 {
 				margin: 0 0 0.5em 0;
-				color: var(--text-header);
+				@apply text-gray-800 dark:text-gray-50;
 			}
 			.date {
 				margin-bottom: 0.5em;
-				color: var(--text);
+				@apply text-gray-600 dark:text-gray-300;
 			}
 			.last-updated-on {
 				font-style: italic;

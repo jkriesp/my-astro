@@ -4,29 +4,39 @@
 
 @layer base {
   :root {
-    --accent: theme("colors.blue.500");
-    --accent-secondary: theme("colors.green.500");
-    --background: theme("colors.gray.50");
-    --background-secondary: theme("colors.white");
-    --text: theme("colors.gray.600");
-    --text-header: theme("colors.gray.800");
-    --gray-gradient: theme("colors.gray.100"), var(--background);
-    --code-bg: theme("colors.gray.100");
-    --code-text: theme("colors.gray.800");
-    --box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    --accent-primary: #8475b5; /* lavender-500 */
+    --accent-secondary: #6b8a6b; /* sage-500 */
+    --accent-tertiary: #70a8cc; /* powder-500 */
+    --background: #fafafa;
+    --background-secondary: #ffffff;
+    --background-tertiary: #f7f9f7; /* sage-50 */
+    --text: #4a5568; /* soft charcoal */
+    --text-header: #2d3748; /* darker gray */
+    --text-muted: #718096; /* muted gray */
+    --border: #e8ede8; /* sage-100 */
+    --gradient-start: #efecf7; /* lavender-100 */
+    --gradient-end: #ecf2f7; /* powder-100 */
+    --code-bg: #f8f7fb; /* lavender-50 */
+    --code-text: #6b8a6b; /* sage-500 */
+    --box-shadow: rgba(141, 169, 196, 0.08); /* powder blue shadow */
   }
 
   [data-theme="dark"] {
-    --accent: theme("colors.blue.600");
-    --accent-secondary: theme("colors.green.600");
-    --background: theme("colors.gray.900");
-    --background-secondary: theme("colors.gray.800");
-    --text: theme("colors.gray.300");
-    --text-header: theme("colors.gray.100");
-    --gray-gradient: theme("colors.gray.800"), var(--background);
-    --code-bg: theme("colors.gray.800");
-    --code-text: theme("colors.gray.200");
-    --box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    --accent-primary: #b5a8d6; /* lighter lavender */
+    --accent-secondary: #9db89d; /* lighter sage */
+    --accent-tertiary: #a0c4dc; /* lighter powder blue */
+    --background: #1a1f1e; /* deep charcoal with sage tint */
+    --background-secondary: #232928;
+    --background-tertiary: #2a3632; /* sage-800 */
+    --text: #d4dbd6; /* soft sage-tinted light gray */
+    --text-header: #e8f0eb; /* lighter sage-tinted white */
+    --text-muted: #9ca6a0; /* muted sage-tinted gray */
+    --border: #3a4a44; /* sage-700 */
+    --gradient-start: #332f40; /* lavender-800 */
+    --gradient-end: #2d4455; /* powder-800 */
+    --code-bg: #332f40; /* lavender-800 */
+    --code-text: #9db89d; /* lighter sage */
+    --box-shadow: rgba(180, 168, 214, 0.12); /* lavender shadow */
   }
 }
 
@@ -36,24 +46,15 @@
   }
 
   .tag {
-    @apply inline-block px-3 py-1 rounded-full text-sm transition-colors;
-    @apply bg-gray-100 text-gray-700 hover:bg-gray-200;
-    @apply transform transition-all duration-200 hover:-translate-y-0.5;
+    @apply inline-block px-3 py-1 rounded-full text-sm;
+    @apply bg-lavender-100 text-lavender-700 hover:bg-lavender-200;
+    @apply transform transition-all duration-300 hover:-translate-y-0.5;
     [data-theme="dark"] & {
-      @apply bg-gray-700 text-gray-200 hover:bg-gray-600;
+      @apply bg-lavender-800 text-lavender-200 hover:bg-lavender-700;
     }
   }
 
-  /* Animation keyframes for micro-interactions */
-  @keyframes pulse {
-    0%,
-    100% {
-      transform: scale(1);
-    }
-    50% {
-      transform: scale(1.05);
-    }
-  }
+  /* Animation keyframes for refined micro-interactions */
 
   @keyframes slideInUnderline {
     from {
@@ -73,9 +74,20 @@
     }
   }
 
-  /* Button animation class */
+  @keyframes softFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Button animation class - refined */
   .btn-animate {
-    @apply relative overflow-hidden transition-all duration-200;
+    @apply relative overflow-hidden transition-all duration-300;
   }
 
   .btn-animate:hover {
@@ -84,6 +96,36 @@
 
   .btn-animate:active {
     @apply transform translate-y-0;
+  }
+
+  /* Geometric pattern utilities */
+  .geometric-hero-bg {
+    position: relative;
+    background:
+      radial-gradient(circle at 20% 30%, var(--gradient-start) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, var(--gradient-end) 0%, transparent 50%),
+      var(--background);
+  }
+
+  .gentle-lift {
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+  }
+
+  .gentle-lift:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px var(--box-shadow);
+  }
+
+  .elevation-1 {
+    box-shadow:
+      0 1px 3px var(--box-shadow),
+      0 0 0 1px var(--border);
+  }
+
+  .elevation-2 {
+    box-shadow:
+      0 4px 12px var(--box-shadow),
+      0 0 0 1px var(--border);
   }
 }
 
@@ -106,7 +148,11 @@
 /* Base styles */
 body {
   font-family: "Atkinson", sans-serif;
-  @apply m-0 p-0 text-left bg-gray-50 text-gray-600 text-lg leading-7 dark:bg-gray-900 dark:text-gray-300;
+  font-size: 1.0625rem; /* 17px - slightly larger for muted colors */
+  line-height: 1.7;
+  letter-spacing: 0.01em;
+  @apply m-0 p-0 text-left text-gray-600 dark:text-gray-300;
+  background-color: var(--background);
 }
 
 main {
@@ -116,7 +162,7 @@ main {
 main::before {
   content: "";
   @apply absolute top-0 left-1/2 -translate-x-1/2 w-screen h-[600px];
-  background: linear-gradient(var(--gray-gradient));
+  background: linear-gradient(var(--gradient-start), var(--background));
   z-index: -1;
 }
 
@@ -127,27 +173,35 @@ h3,
 h4,
 h5,
 h6 {
-  @apply text-gray-900 dark:text-gray-50 leading-tight;
-  /* Reduced default margins for all headings */
+  @apply text-gray-800 dark:text-gray-50;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  /* Refined margins for all headings */
   margin-top: 1.5em;
   margin-bottom: 0.7em;
 }
 
 h1 {
-  @apply text-[3.052em];
-  animation: fadeIn 0.4s ease-out;
+  font-size: 2.75rem;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  animation: fadeIn 0.6s ease-out;
 }
 h2 {
-  @apply text-[2.441em];
+  font-size: 2.2rem;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
 }
 h3 {
-  @apply text-[1.953em];
+  font-size: 1.75rem;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
 }
 h4 {
-  @apply text-[1.563em];
+  font-size: 1.5rem;
 }
 h5 {
-  @apply text-[1.25em];
+  font-size: 1.25rem;
 }
 
 strong,
@@ -156,20 +210,27 @@ b {
 }
 
 a {
-  @apply text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300;
-  @apply relative transition-all duration-300 ease-in-out;
+  color: var(--accent-primary);
+  @apply relative;
+  font-weight: 500;
+  transition: all 0.4s ease-in-out;
 }
 
-/* Fancy link underline effect */
+a:hover {
+  opacity: 0.8;
+}
+
+/* Refined link underline effect */
 a:not(.tag):not(.btn-animate) {
   @apply relative;
 }
 
 a:not(.tag):not(.btn-animate)::after {
   content: "";
-  @apply absolute bottom-0 left-0 h-0.5 bg-blue-600 dark:bg-blue-400;
+  @apply absolute bottom-0 left-0 h-0.5;
+  background-color: var(--accent-primary);
   width: 0;
-  transition: width 0.3s ease;
+  transition: width 0.4s ease;
 }
 
 a:not(.tag):not(.btn-animate):hover::after {
@@ -177,15 +238,19 @@ a:not(.tag):not(.btn-animate):hover::after {
 }
 
 code {
-  @apply bg-gray-100 dark:bg-gray-800 px-1 rounded text-gray-800 dark:text-gray-200;
+  @apply px-1 rounded;
+  background-color: var(--code-bg);
+  color: var(--code-text);
 }
 
 pre {
-  @apply p-4 rounded-lg bg-gray-100 dark:bg-gray-800;
+  @apply p-4 rounded-lg;
+  background-color: var(--code-bg);
 }
 
 pre code {
-  @apply p-0 text-gray-800 dark:text-gray-200;
+  @apply p-0;
+  color: var(--code-text);
 }
 
 /* Utilities */
@@ -238,16 +303,25 @@ pre code {
   animation-delay: 0.1s;
 }
 
-/* Button styles with hover effects */
+/* Button styles with refined hover effects */
 button:not(#themeToggle) {
-  @apply transition-all duration-200 transform hover:-translate-y-0.5 hover:shadow-md;
+  @apply transition-all duration-300 transform;
 }
 
-/* List item hover effects */
+button:not(#themeToggle):hover {
+  transform: translateY(-1px);
+  opacity: 0.9;
+}
+
+/* List items */
 ul li {
-  @apply transition-all duration-200;
+  @apply my-1;
 }
 
-ul li:hover {
-  @apply transform translate-x-1;
+/* Focus states with soft lavender glow */
+*:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 3px;
+  border-radius: 4px;
+  box-shadow: 0 0 0 4px rgba(132, 117, 181, 0.1);
 }
