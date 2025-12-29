@@ -5,47 +5,74 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Using standard Tailwind colors for consistency
-        // We're not redefining them as they're already available
-        // Just documenting our color usage here:
-        /*
-        Light theme:
-        - Primary bg: gray-50
-        - Secondary bg: white
-        - Headings: gray-800
-        - Body text: gray-600
-        - Links: blue-600
-        - Primary accent: blue-500
-        - Secondary accent: green-500
-
-        Dark theme:
-        - Primary bg: gray-900
-        - Secondary bg: gray-800
-        - Headings: gray-100
-        - Body text: gray-300
-        - Links: blue-400
-        - Primary accent: blue-600
-        - Secondary accent: green-600
-        */
+        // Muted pastel color palette for modern minimalist design
+        sage: {
+          50: '#f7f9f7',
+          100: '#e8ede8',
+          200: '#d1ddd1',
+          300: '#b5c9b5',
+          400: '#8fa98f',
+          500: '#6b8a6b',
+          600: '#557055',
+          700: '#3a4a44',
+          800: '#2a3632',
+          900: '#1a2220',
+        },
+        lavender: {
+          50: '#f8f7fb',
+          100: '#efecf7',
+          200: '#d9d3eb',
+          300: '#c0b6dd',
+          400: '#a095c9',
+          500: '#8475b5',
+          600: '#6b5f99',
+          700: '#554f68',
+          800: '#332f40',
+          900: '#221f2b',
+        },
+        blush: {
+          50: '#fdf8f8',
+          100: '#f9eeee',
+          200: '#f0d9d9',
+          300: '#e5bfbf',
+          400: '#d69f9f',
+          500: '#c68080',
+          600: '#a66666',
+          700: '#7d4d4d',
+          800: '#4d3030',
+          900: '#2b1a1a',
+        },
+        powder: {
+          50: '#f7f9fb',
+          100: '#ecf2f7',
+          200: '#d6e4f0',
+          300: '#b8d3e6',
+          400: '#93bdd9',
+          500: '#70a8cc',
+          600: '#5a8ab3',
+          700: '#446888',
+          800: '#2d4455',
+          900: '#1a2733',
+        },
       },
       typography: {
         DEFAULT: {
           css: {
-            "--tw-prose-body": "rgb(71 85 105)", // gray-600
-            "--tw-prose-headings": "rgb(31 41 55)", // gray-800
-            "--tw-prose-links": "rgb(37 99 235)", // blue-600
-            "--tw-prose-bold": "rgb(31 41 55)", // gray-800
-            "--tw-prose-code": "rgb(31 41 55)", // gray-800
-            "--tw-prose-quotes": "rgb(71 85 105)", // gray-600
+            "--tw-prose-body": "#4a5568", // Soft charcoal
+            "--tw-prose-headings": "#2d3748", // Darker gray
+            "--tw-prose-links": "#8475b5", // Lavender
+            "--tw-prose-bold": "#2d3748", // Darker gray
+            "--tw-prose-code": "#6b8a6b", // Sage
+            "--tw-prose-quotes": "#718096", // Muted gray
 
             // Dark mode
             '[data-theme="dark"] &': {
-              "--tw-prose-body": "rgb(209 213 219)", // gray-300
-              "--tw-prose-headings": "rgb(243 244 246)", // gray-100
-              "--tw-prose-links": "rgb(96 165 250)", // blue-400
-              "--tw-prose-bold": "rgb(243 244 246)", // gray-100
-              "--tw-prose-code": "rgb(243 244 246)", // gray-100
-              "--tw-prose-quotes": "rgb(209 213 219)", // gray-300
+              "--tw-prose-body": "#d4dbd6", // Soft sage-tinted light gray
+              "--tw-prose-headings": "#e8f0eb", // Lighter sage-tinted white
+              "--tw-prose-links": "#b5a8d6", // Lighter lavender
+              "--tw-prose-bold": "#e8f0eb", // Lighter sage-tinted white
+              "--tw-prose-code": "#9db89d", // Lighter sage
+              "--tw-prose-quotes": "#9ca6a0", // Muted sage-tinted gray
             },
           },
         },

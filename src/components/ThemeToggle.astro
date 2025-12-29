@@ -12,33 +12,38 @@
 <style>
   #themeToggle {
     @apply border-0 bg-transparent cursor-pointer p-2;
-    @apply text-gray-600 dark:text-gray-300;
-    @apply hover:text-gray-800 dark:hover:text-gray-100;
-    @apply opacity-80 hover:opacity-100 transition-all;
     @apply flex items-center justify-center;
     @apply min-w-[44px] min-h-[44px];
+    color: var(--text);
+    opacity: 0.8;
+    transition: all 0.3s ease;
   }
-  
+
+  #themeToggle:hover {
+    opacity: 1;
+    color: var(--accent-primary);
+  }
+
   #themeToggle:hover svg {
-    transform: scale(1.15);
+    transform: scale(1.1);
   }
-  
+
   #themeToggle svg {
-    transition: transform 0.2s ease, opacity 0.3s ease;
+    transition: transform 0.3s ease, opacity 0.3s ease;
   }
-  
+
   .sun, .moon {
     @apply hidden;
     opacity: 0;
-    transition: opacity 0.5s ease;
+    transition: opacity 0.4s ease;
   }
-  
+
   html[data-theme='dark'] #themeToggle .sun,
   html[data-theme='light'] #themeToggle .moon {
     @apply block;
     opacity: 1;
   }
-  
+
   @media (max-width: 720px) {
     #themeToggle {
       @apply p-3;
@@ -68,17 +73,18 @@
     localStorage.setItem('theme', newTheme);
   });
   
-  // Add the animation keyframe
+  // Add the refined animation keyframe
   if (!document.querySelector('#themeToggleStyle')) {
     const style = document.createElement('style');
     style.id = 'themeToggleStyle';
     style.textContent = `
       @keyframes rotate {
-        0% { transform: rotate(0); }
-        100% { transform: rotate(360deg); }
+        0% { transform: rotate(0) scale(1); }
+        50% { transform: rotate(90deg) scale(1.05); }
+        100% { transform: rotate(180deg) scale(1); }
       }
       .rotating svg {
-        animation: rotate 0.5s ease-in-out;
+        animation: rotate 0.4s ease-in-out;
       }
     `;
     document.head.appendChild(style);

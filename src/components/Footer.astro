@@ -23,19 +23,29 @@ const today = new Date();
 </footer>
 <style>
   footer {
-    @apply py-8 px-4 pb-16 bg-gray-50 dark:bg-gray-900;
-    background: linear-gradient(var(--gray-gradient)) no-repeat;
+    @apply py-8 px-4 pb-16;
+    background:
+      radial-gradient(circle at 30% 50%, var(--gradient-start) 0%, transparent 60%),
+      radial-gradient(circle at 70% 50%, var(--gradient-end) 0%, transparent 60%),
+      var(--background-tertiary);
+    border-top: 1px solid var(--border);
   }
-  
+
   .content {
-    @apply text-center text-gray-600 dark:text-gray-300;
+    @apply text-center;
+    color: var(--text-muted);
   }
-  
+
   .social-links {
     @apply flex justify-center gap-4 mt-4;
   }
-  
+
   .social-links a {
-    @apply text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100 transition-colors;
+    color: var(--text);
+    transition: opacity 0.3s ease;
+  }
+
+  .social-links a:hover {
+    opacity: 0.7;
   }
 </style>

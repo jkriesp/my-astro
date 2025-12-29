@@ -29,60 +29,66 @@ import { SITE_TITLE } from "../consts";
 </header>
 <style>
   header {
-    @apply m-0 px-4 py-0 bg-white dark:bg-gray-800 shadow-sm;
+    @apply m-0 px-4 py-0;
+    background-color: var(--background-secondary);
+    border-bottom: 1px solid var(--border);
   }
   h2 {
     @apply m-0 text-base;
   }
   h2 a,
   h2 a.active {
-    @apply no-underline text-gray-800 dark:text-gray-100;
+    @apply no-underline;
+    color: var(--text-header);
   }
   .site-title {
     @apply relative inline-block;
-    transition: transform 0.2s ease;
+    transition: transform 0.3s ease, opacity 0.3s ease;
   }
   .site-title:hover {
-    transform: scale(1.05);
+    transform: scale(1.03);
+    opacity: 0.8;
   }
   .site-title:active {
-    transform: scale(0.95);
+    transform: scale(0.98);
   }
   nav {
     @apply flex items-center justify-between;
   }
   nav a {
-    @apply py-4 px-2 text-gray-600 dark:text-gray-300 border-b-4 border-transparent;
+    @apply py-4 px-2 border-b-4 border-transparent;
+    color: var(--text);
     text-decoration: none;
+    transition: all 0.3s ease;
   }
   nav a.active {
-    @apply no-underline border-blue-500 dark:border-blue-600;
+    @apply no-underline;
+    border-color: var(--accent-primary);
+    color: var(--text-header);
+    font-weight: 600;
   }
   .right-section {
     @apply flex items-center gap-2;
   }
   .social-links,
   .social-links a {
-    @apply flex text-gray-600 dark:text-gray-300;
+    @apply flex;
+    color: var(--text);
   }
-  
+
   .github-link {
     position: relative;
-    transition: transform 0.3s ease;
+    transition: opacity 0.3s ease;
   }
-  
+
   .github-link:hover {
-    transform: rotate(5deg);
+    opacity: 0.7;
   }
-  
+
   .github-icon {
     transition: all 0.3s ease;
   }
-  
-  .github-link:hover .github-icon {
-    filter: drop-shadow(0 0 3px currentColor);
-  }
-  
+
   @media (max-width: 720px) {
     .social-links {
       @apply hidden;
@@ -94,22 +100,24 @@ import { SITE_TITLE } from "../consts";
 </style>
 
 <script>
-  // Add subtle animation to header links but skip active links
+  // Add refined subtle animation to header links but skip active links
   const headerLinks = document.querySelectorAll('.internal-links a');
-  
+
   headerLinks.forEach(link => {
     link.addEventListener('mouseenter', (e) => {
       // Only apply hover effect if link is not active
       if (!link.classList.contains('active')) {
-        (link as HTMLElement).style.transition = 'transform 0.2s ease-out';
-        (link as HTMLElement).style.transform = 'translateY(-2px)';
+        (link as HTMLElement).style.transition = 'transform 0.3s ease-out, opacity 0.3s ease';
+        (link as HTMLElement).style.transform = 'translateY(-1px)';
+        (link as HTMLElement).style.opacity = '0.8';
       }
     });
-    
+
     link.addEventListener('mouseleave', (e) => {
       // Only reset transform if link is not active
       if (!link.classList.contains('active')) {
         (link as HTMLElement).style.transform = 'translateY(0)';
+        (link as HTMLElement).style.opacity = '1';
       }
     });
   });

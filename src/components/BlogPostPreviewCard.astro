@@ -89,18 +89,21 @@ const imageSource = heroImage ? heroImageMap[heroImage as keyof typeof heroImage
 
 <style>
   .card {
-    @apply flex-1 min-w-[300px] max-w-md m-4 bg-white dark:bg-gray-800 rounded-lg overflow-hidden;
-    @apply border border-gray-200 dark:border-gray-700;
-    @apply transition-all duration-300 ease-in-out;
-    @apply shadow-sm;
+    @apply flex-1 min-w-[300px] max-w-md m-4 rounded-lg overflow-hidden;
+    background-color: var(--background-secondary);
+    border: 1px solid var(--border);
+    transition: all 0.4s ease;
     position: relative;
-    transform-style: preserve-3d;
-    perspective: 1000px;
+    box-shadow:
+      0 1px 3px var(--box-shadow),
+      0 0 0 1px var(--border);
   }
-  
+
   .card:hover {
-    @apply -translate-y-2 shadow-md;
-    transform: rotateX(2deg) rotateY(0deg);
+    transform: translateY(-1px);
+    box-shadow:
+      0 4px 12px var(--box-shadow),
+      0 0 0 1px var(--border);
   }
   
   .image-container {
@@ -108,52 +111,59 @@ const imageSource = heroImage ? heroImageMap[heroImage as keyof typeof heroImage
   }
   
   .card-image {
-    @apply w-full h-auto object-cover transition-transform duration-300;
+    @apply w-full h-auto object-cover;
+    transition: transform 0.4s ease, opacity 0.4s ease;
   }
-  
+
   .card:hover .card-image {
-    transform: scale(1.05);
+    transform: scale(1.02);
+    opacity: 0.95;
   }
-  
+
   .image-overlay {
-    @apply absolute inset-0 bg-black bg-opacity-0 flex items-center justify-center transition-all duration-300;
+    @apply absolute inset-0 flex items-center justify-center;
+    background-color: rgba(132, 117, 181, 0);
     opacity: 0;
+    transition: all 0.4s ease;
   }
-  
+
   .card:hover .image-overlay {
-    @apply bg-opacity-30;
+    background-color: rgba(132, 117, 181, 0.15);
     opacity: 1;
   }
   
   /* Mobile in-view styles (for scroll-based appearance) */
   @media (max-width: 767px) {
     .mobile-in-view .image-overlay {
-      @apply bg-opacity-30;
+      background-color: rgba(132, 117, 181, 0.15);
       opacity: 1;
     }
-    
+
     .mobile-in-view .read-indicator {
       @apply translate-y-0 opacity-100;
     }
   }
-  
+
   .read-indicator {
-    @apply px-4 py-2 bg-blue-600 text-white rounded-md transform translate-y-4 opacity-0 transition-all duration-300;
-    @apply border-0 cursor-pointer;
+    @apply px-4 py-2 rounded-md transform translate-y-4 opacity-0 border-0 cursor-pointer;
+    background-color: var(--accent-primary);
+    color: var(--background-secondary);
+    transition: all 0.4s ease;
   }
-  
+
   .read-indicator .button-link {
-    @apply text-white no-underline font-medium;
+    @apply no-underline font-medium;
+    color: var(--background-secondary);
     display: block;
   }
-  
+
   .card:hover .read-indicator {
     @apply translate-y-0 opacity-100;
   }
-  
+
   .read-indicator:hover {
-    @apply bg-blue-700 dark:bg-blue-500;
-    transform: scale(1.05);
+    transform: scale(1.03);
+    opacity: 0.9;
   }
   
   .content {
@@ -178,16 +188,18 @@ const imageSource = heroImage ? heroImageMap[heroImage as keyof typeof heroImage
     left: 0;
     width: 0;
     height: 2px;
-    @apply bg-blue-600 dark:bg-blue-400;
-    transition: width 0.3s ease;
+    background-color: var(--accent-primary);
+    transition: width 0.4s ease;
   }
-  
+
   .card:hover .post-title::after {
     width: 100%;
   }
-  
+
   .post-description {
-    @apply mt-2 transition-all duration-300;
+    @apply mt-2;
+    color: var(--text);
+    transition: all 0.4s ease;
   }
 
   .tags-container {

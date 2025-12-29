@@ -57,11 +57,13 @@ if (relatedPosts.length < limit) {
 
 <style>
   .related-posts {
-    @apply mt-12 pt-8 border-t border-gray-200 dark:border-gray-700;
+    @apply mt-12 pt-8;
+    border-top: 1px solid var(--border);
   }
 
   .section-title {
     @apply text-2xl font-bold mb-2 text-center;
+    color: var(--text-header);
     position: relative;
   }
 
@@ -72,17 +74,18 @@ if (relatedPosts.length < limit) {
     left: 50%;
     width: 60px;
     height: 3px;
-    background-color: var(--accent);
+    background: linear-gradient(to right, var(--accent-primary), var(--accent-tertiary));
     transform: translateX(-50%);
-    transition: width 0.3s ease;
+    transition: width 0.4s ease;
   }
 
   .section-title:hover::after {
-    width: 100px;
+    width: 120px;
   }
 
   .section-description {
-    @apply text-center mb-6 text-gray-600 dark:text-gray-400;
+    @apply text-center mb-6;
+    color: var(--text-muted);
   }
 
   .posts-grid {
