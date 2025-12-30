@@ -22,21 +22,21 @@
   }
 
   [data-theme="dark"] {
-    --accent-primary: #b5a8d6; /* lighter lavender */
-    --accent-secondary: #9db89d; /* lighter sage */
-    --accent-tertiary: #a0c4dc; /* lighter powder blue */
-    --background: #1a1f1e; /* deep charcoal with sage tint */
-    --background-secondary: #232928;
-    --background-tertiary: #2a3632; /* sage-800 */
-    --text: #d4dbd6; /* soft sage-tinted light gray */
-    --text-header: #e8f0eb; /* lighter sage-tinted white */
-    --text-muted: #9ca6a0; /* muted sage-tinted gray */
-    --border: #3a4a44; /* sage-700 */
-    --gradient-start: #332f40; /* lavender-800 */
-    --gradient-end: #2d4455; /* powder-800 */
-    --code-bg: #332f40; /* lavender-800 */
-    --code-text: #9db89d; /* lighter sage */
-    --box-shadow: rgba(180, 168, 214, 0.12); /* lavender shadow */
+    --accent-primary: #c4b5fd; /* vibrant lavender */
+    --accent-secondary: #86efac; /* bright sage green */
+    --accent-tertiary: #7dd3fc; /* bright sky blue */
+    --background: #0f172a; /* deep slate - modern and neutral */
+    --background-secondary: #1e293b; /* slate-800 */
+    --background-tertiary: #334155; /* slate-700 */
+    --text: #e2e8f0; /* crisp light gray - excellent readability */
+    --text-header: #f8fafc; /* almost white for headers */
+    --text-muted: #94a3b8; /* muted slate gray */
+    --border: #334155; /* slate-700 for subtle borders */
+    --gradient-start: #312e81; /* deep indigo */
+    --gradient-end: #1e3a8a; /* deep blue */
+    --code-bg: #1e293b; /* slate-800 for code blocks */
+    --code-text: #86efac; /* bright sage for code */
+    --box-shadow: rgba(196, 181, 253, 0.15); /* soft lavender glow */
   }
 }
 
