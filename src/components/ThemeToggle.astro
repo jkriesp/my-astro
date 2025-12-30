@@ -59,29 +59,32 @@
     const element = document.documentElement;
     const isDark = element.getAttribute('data-theme') === 'dark';
     const newTheme = isDark ? 'light' : 'dark';
-    
+
     // Add animation class
     const toggleButton = document.getElementById('themeToggle');
     toggleButton.classList.add('rotating');
-    
-    // Remove class after animation completes
+
+    // Change theme at the halfway point of rotation (when icon is rotated 90deg and not visible)
+    setTimeout(() => {
+      element.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+    }, 200); // Halfway through 400ms animation
+
+    // Remove animation class after animation completes
     setTimeout(() => {
       toggleButton.classList.remove('rotating');
-    }, 500);
-    
-    element.setAttribute('data-theme', newTheme);
-    localStorage.setItem('theme', newTheme);
+    }, 400);
   });
-  
+
   // Add the refined animation keyframe
   if (!document.querySelector('#themeToggleStyle')) {
     const style = document.createElement('style');
     style.id = 'themeToggleStyle';
     style.textContent = `
       @keyframes rotate {
-        0% { transform: rotate(0) scale(1); }
-        50% { transform: rotate(90deg) scale(1.05); }
-        100% { transform: rotate(180deg) scale(1); }
+        0% { transform: rotate(0deg) scale(1); }
+        50% { transform: rotate(180deg) scale(1.05); }
+        100% { transform: rotate(360deg) scale(1); }
       }
       .rotating svg {
         animation: rotate 0.4s ease-in-out;
