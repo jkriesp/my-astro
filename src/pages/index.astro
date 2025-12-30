@@ -4,6 +4,18 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import LatestBlogPosts from "../components/LatestBlogPosts.astro";
+import { getCollection } from "astro:content";
+
+// Get blog stats
+const allPosts = await getCollection("blog");
+const totalPosts = allPosts.length;
+const allTags = [...new Set(allPosts.flatMap(post => post.data.tags))];
+const topicCount = allTags.length;
+
+// Get latest post for featured snippet
+const latestPost = allPosts.sort((a, b) =>
+  b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+)[0];
 ---
 
 <!doctype html>
@@ -14,35 +26,77 @@ import LatestBlogPosts from "../components/LatestBlogPosts.astro";
   <body>
     <Header />
     <main>
-      <section class="hero-section">
-        <div class="gradient-orb gradient-orb-1"></div>
-        <div class="gradient-orb gradient-orb-2"></div>
-        <div class="gradient-orb gradient-orb-3"></div>
+      <!-- Bento Grid Hero -->
+      <section class="bento-grid">
+        <!-- Main Hero Card - Large -->
+        <div class="bento-card bento-hero">
+          <div class="gradient-orb gradient-orb-1"></div>
+          <div class="gradient-orb gradient-orb-2"></div>
 
-        <div class="hero-content">
-          <h1 class="animated-title">
-            <span class="gradient-text">Jens Kristian Espevik</span>
-          </h1>
-
-          <p class="intro-paragraph">
-            Software developer. I write about what I'm learning, building, and figuring out as I go.
-          </p>
+          <div class="hero-content">
+            <h1 class="animated-title">
+              <span class="gradient-text">Jens Kristian Espevik</span>
+            </h1>
+            <p class="intro-paragraph">
+              Software developer. I write about what I'm learning, building, and figuring out as I go.
+            </p>
+          </div>
         </div>
 
-        <h2 class="section-title">Recent Topics</h2>
+        <!-- Stats Card -->
+        <div class="bento-card bento-stats">
+          <div class="stats-header">
+            <svg class="stats-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 20V10M12 20V4M6 20v-6"/>
+            </svg>
+            <h3>Stats</h3>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-item">
+              <div class="stat-value">{totalPosts}</div>
+              <div class="stat-label">Posts</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value">{topicCount}</div>
+              <div class="stat-label">Topics</div>
+            </div>
+          </div>
+        </div>
 
-        <ul class="feature-list">
-          <li class="feature-item">Web development and modern frameworks</li>
-          <li class="feature-item">Cloud architecture and DevOps practices</li>
-          <li class="feature-item">Side projects and experiments</li>
-          <li class="feature-item">Tools and workflows that actually work</li>
-        </ul>
+        <!-- Currently Card -->
+        <div class="bento-card bento-currently">
+          <div class="currently-header">
+            <div class="pulse-indicator"></div>
+            <h3>Currently</h3>
+          </div>
+          <div class="currently-content">
+            <p class="currently-item">Exploring Kubernetes on local clusters</p>
+            <p class="currently-item">Building with Astro & modern web tech</p>
+          </div>
+        </div>
 
-        <p class="outro-text">
-          Built with Astro. Thoughts and opinions are my own.
-        </p>
-      
+        <!-- Featured Post Card -->
+        <div class="bento-card bento-featured">
+          <div class="featured-badge">Latest</div>
+          <h3 class="featured-title">{latestPost.data.title}</h3>
+          <p class="featured-description">{latestPost.data.description}</p>
+          <a href={`/blog/${latestPost.slug}`} class="featured-link">
+            Read more →
+          </a>
+        </div>
+
+        <!-- Topics Card -->
+        <div class="bento-card bento-topics">
+          <h3 class="topics-title">Writing About</h3>
+          <div class="topics-tags">
+            {allTags.slice(0, 6).map(tag => (
+              <span class="topic-tag">{tag}</span>
+            ))}
+          </div>
+        </div>
       </section>
+
+      <!-- Latest Posts Section -->
       <section class="blog-section">
         <h2 class="section-title">Latest Posts</h2>
         <LatestBlogPosts />
@@ -53,16 +107,65 @@ import LatestBlogPosts from "../components/LatestBlogPosts.astro";
 </html>
 
 <style>
-  .hero-section {
-    @apply mb-8 p-8 rounded-2xl;
-    position: relative;
-    overflow: hidden;
-    background: var(--background-tertiary);
-    border: 1px solid var(--border);
-    min-height: 400px;
+  /* Bento Grid Layout */
+  .bento-grid {
+    @apply mb-8;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1rem;
+    grid-auto-rows: minmax(120px, auto);
   }
 
-  /* Floating gradient orbs */
+  /* Base card styles */
+  .bento-card {
+    @apply rounded-2xl p-6;
+    background: var(--background-tertiary);
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .bento-card:hover {
+    border-color: var(--accent-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  }
+
+  /* Hero Card - Large focal point */
+  .bento-hero {
+    grid-column: span 4;
+    grid-row: span 2;
+    min-height: 280px;
+  }
+
+  /* Stats Card */
+  .bento-stats {
+    grid-column: span 2;
+    grid-row: span 1;
+  }
+
+  /* Currently Card */
+  .bento-currently {
+    grid-column: span 2;
+    grid-row: span 1;
+  }
+
+  /* Featured Post Card */
+  .bento-featured {
+    grid-column: span 3;
+    grid-row: span 2;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Topics Card */
+  .bento-topics {
+    grid-column: span 3;
+    grid-row: span 1;
+  }
+
+  /* Gradient orbs (for hero card) */
   .gradient-orb {
     position: absolute;
     border-radius: 50%;
@@ -90,16 +193,6 @@ import LatestBlogPosts from "../components/LatestBlogPosts.astro";
     animation: float 15s ease-in-out infinite reverse;
   }
 
-  .gradient-orb-3 {
-    width: 200px;
-    height: 200px;
-    background: radial-gradient(circle, var(--accent-secondary) 0%, transparent 70%);
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    animation: pulse 10s ease-in-out infinite;
-  }
-
   @keyframes float {
     0%, 100% {
       transform: translate(0, 0) scale(1);
@@ -112,33 +205,18 @@ import LatestBlogPosts from "../components/LatestBlogPosts.astro";
     }
   }
 
-  @keyframes pulse {
-    0%, 100% {
-      transform: translate(-50%, -50%) scale(1);
-      opacity: 0.5;
-    }
-    50% {
-      transform: translate(-50%, -50%) scale(1.2);
-      opacity: 0.7;
-    }
-  }
-
+  /* Hero content */
   .hero-content {
     position: relative;
     z-index: 1;
   }
 
-  .blog-section {
-    @apply mb-8;
-  }
-
   .animated-title {
-    @apply relative;
-    font-size: 3.5rem;
+    font-size: 3rem;
     line-height: 1.1;
+    margin-bottom: 1rem;
   }
 
-  /* Animated gradient text */
   .gradient-text {
     background: linear-gradient(
       120deg,
@@ -165,53 +243,163 @@ import LatestBlogPosts from "../components/LatestBlogPosts.astro";
     }
   }
 
-  .rocket-emoji {
-    display: inline-block;
-    transition: transform 0.3s ease;
+  .intro-paragraph {
+    @apply text-lg;
+    color: var(--text-secondary);
   }
 
-  .animated-title:hover .rocket-emoji {
-    animation: gentleRocketLift 0.6s ease-in-out;
-    transform-origin: center;
+  /* Stats Card */
+  .stats-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
   }
 
-  @keyframes gentleRocketLift {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    50% { transform: translateY(-6px) rotate(3deg); }
+  .stats-icon {
+    width: 24px;
+    height: 24px;
+    color: var(--accent-primary);
   }
 
-  @media (max-width: 768px) {
-    .animated-title {
-      font-size: 2.5rem;
+  .stats-header h3 {
+    @apply text-lg font-semibold;
+    margin: 0;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .stat-item {
+    text-align: center;
+  }
+
+  .stat-value {
+    @apply text-4xl font-bold;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .stat-label {
+    @apply text-sm mt-1;
+    color: var(--text-secondary);
+  }
+
+  /* Currently Card */
+  .currently-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .pulse-indicator {
+    width: 10px;
+    height: 10px;
+    background: var(--accent-primary);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1);
     }
-
-    .gradient-orb {
-      filter: blur(40px);
+    50% {
+      opacity: 0.5;
+      transform: scale(1.1);
     }
   }
 
-  .name-highlight {
+  .currently-header h3 {
+    @apply text-lg font-semibold;
+    margin: 0;
+  }
+
+  .currently-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .currently-item {
+    @apply text-sm;
+    color: var(--text-secondary);
+    padding-left: 1rem;
     position: relative;
-    padding: 0 2px;
   }
 
-  .name-highlight::after {
-    content: '';
+  .currently-item::before {
+    content: '→';
     position: absolute;
-    bottom: -2px;
     left: 0;
-    width: 0;
-    height: 2px;
-    background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
-    transition: width 0.4s ease;
+    color: var(--accent-secondary);
   }
 
-  .name-highlight:hover::after {
-    width: 100%;
+  /* Featured Post Card */
+  .featured-badge {
+    @apply text-xs font-semibold px-3 py-1 rounded-full inline-block mb-3;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: white;
+    width: fit-content;
   }
 
-  .intro-paragraph, .outro-text {
-    @apply my-6;
+  .featured-title {
+    @apply text-xl font-bold mb-2;
+    color: var(--text-primary);
+  }
+
+  .featured-description {
+    @apply text-sm mb-4;
+    color: var(--text-secondary);
+    flex-grow: 1;
+  }
+
+  .featured-link {
+    @apply text-sm font-semibold inline-flex items-center gap-1;
+    color: var(--accent-primary);
+    text-decoration: none;
+    transition: gap 0.3s ease;
+  }
+
+  .featured-link:hover {
+    gap: 0.5rem;
+  }
+
+  /* Topics Card */
+  .topics-title {
+    @apply text-lg font-semibold mb-3;
+  }
+
+  .topics-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .topic-tag {
+    @apply text-xs px-3 py-1.5 rounded-lg;
+    background: var(--background-secondary);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
+  }
+
+  .topic-tag:hover {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+    transform: translateY(-2px);
+  }
+
+  /* Blog Section */
+  .blog-section {
+    @apply mb-8;
   }
 
   .section-title {
@@ -235,19 +423,52 @@ import LatestBlogPosts from "../components/LatestBlogPosts.astro";
     width: 120px;
   }
 
-  .feature-list {
-    @apply pl-5;
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .bento-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .bento-hero {
+      grid-column: span 4;
+    }
+
+    .bento-stats,
+    .bento-currently {
+      grid-column: span 2;
+    }
+
+    .bento-featured,
+    .bento-topics {
+      grid-column: span 4;
+    }
   }
 
-  .feature-item {
-    @apply my-3;
-    position: relative;
-  }
+  @media (max-width: 768px) {
+    .bento-grid {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
 
-  .feature-item::before {
-    content: '•';
-    position: absolute;
-    left: -20px;
-    color: var(--accent-secondary);
+    .bento-hero,
+    .bento-stats,
+    .bento-currently,
+    .bento-featured,
+    .bento-topics {
+      grid-column: span 1;
+      grid-row: span 1;
+    }
+
+    .bento-hero {
+      min-height: 240px;
+    }
+
+    .animated-title {
+      font-size: 2rem;
+    }
+
+    .gradient-orb {
+      filter: blur(40px);
+    }
   }
 </style>
