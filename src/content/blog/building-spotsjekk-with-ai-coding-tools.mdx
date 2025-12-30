@@ -1,0 +1,358 @@
+---
+title: "Building Spotsjekk: How to Use AI Coding Tools Effectively"
+description: "Lessons learned building a full-stack electricity price comparison app using Google Antigravity and Claude deep research, with a focus on managing LLM context."
+pubDate: "Dec 30 2025"
+heroImage: "/blog-placeholder-3.jpg"
+tags: ["AI Tools", "FastAPI", "React", "Full-Stack"]
+---
+
+import CodeBlock from '../../components/CodeBlock.astro';
+
+## Introduction
+
+I recently built [Spotsjekk](https://spotsjekk.no), a Norwegian electricity price comparison app that helps consumers decide between flat-rate plans (Norgespris) and dynamic spot pricing with government subsidies. But more interesting than *what* I built is *how* I built it: using Google's new "vibe coding" IDE called Antigravity, combined with Claude deep research for requirements gathering.
+
+This post isn't about the app itself—it's about **how to use agentic coding tools efficiently** while keeping LLM context manageable. If you're working with AI coding assistants, these lessons might save you hours of frustration.
+
+## The Problem: Context and Reality Are Linked
+
+The biggest challenge with AI coding tools isn't the code generation—it's **managing context to keep them grounded in reality**. These two things go hand in hand: **losing context means losing your reality anchor**.
+
+Without proper context management, you'll get:
+
+- Generic solutions that don't fit your actual requirements
+- Code that conflicts with domain-specific business rules
+- Hallucinated patterns that sound good but don't work
+- Drift from your original specifications as the project grows
+
+Why? Because once the AI loses track of your documentation and specifications, it starts filling gaps with plausible-sounding inventions. The longer a conversation continues without anchoring back to your specs, the more the implementation drifts from reality.
+
+The solution? **Build solid documentation first, then actively manage how the AI maintains context by referencing it.**
+
+## Step 1: Deep Research and Documentation
+
+Before writing a single line of code, I used Claude deep research to understand the Norwegian electricity market and saved everything as markdown documentation:
+
+### Research Output: Real Documentation Files
+
+I created three key documentation files in a `docs/` folder:
+
+**1. `norwegian_eletricity_market.md`** - Domain knowledge:
+- How the Norgespris pricing plan works (flat 50 øre/kWh vs spot pricing)
+- Strømstøtte subsidy formula: `(spot - 75) × 0.90 × 1.25`
+- Price zones (NO1-NO5) and MVA (tax) handling
+- Edge cases like negative spot prices
+
+**2. `norgespris_architecture.md`** - Technical specification:
+- API constraints (HvaKosterStrommen.no returns one day at a time)
+- Database schema (hourly prices, daily aggregates, running totals)
+- Calculation formulas with exact break-even analysis
+- Docker architecture options (ended up choosing SQLite for simplicity)
+
+**3. `nettleie_api_analysis.md`** - Integration research:
+- Available APIs for network fees
+- Grid company data sources
+
+**Why this matters:** These files became the **source of truth** that kept the AI grounded throughout development. When Antigravity started generating code, I could verify it against these docs and catch hallucinations early.
+
+The key insight: **Claude deep research excels at synthesizing domain knowledge into structured documentation.** I got comprehensive understanding of Norwegian power market regulations, subsidy formulas, and API ecosystems—all saved as version-controlled markdown files.
+
+## Step 2: Understanding Antigravity's Artifacts System
+
+Here's where it gets interesting. Google Antigravity has a built-in system called **artifacts** that addresses the "trust gap" in AI coding tools. These aren't files in your repository—they're tangible deliverables that provide transparency into what the AI is doing.
+
+### What Artifacts Actually Are
+
+Antigravity generates multiple types of artifacts throughout development:
+
+- **Task lists**: Summarize steps the agent has taken
+- **Implementation plans**: Detail architectural changes before they're made
+- **Walkthroughs**: Narrate the final result and how to test it
+- **Screenshots**: Captured automatically during browser interactions
+- **Browser recordings**: Video of the agent testing your app in Chrome
+
+These artifacts serve as living documentation that you can review and approve before changes are implemented.
+
+### The Feedback Loop
+
+The really powerful part: you can interact with artifacts using **Google Docs-style comments**.
+
+<CodeBlock
+code={`Artifact: Implementation Plan
+────────────────────────────
+Add Statnett grid data integration
+- Create new database table for regional data
+- Implement API service in services/statnett_service.py
+- Add endpoint to routers/statnett.py
+
+[Your comment]: "This should follow the same pattern
+as price_fetcher.py. Check docs/architecture.md for
+the service pattern."
+
+[Agent response]: Updated plan to match existing
+price_fetcher pattern from architecture doc.`}
+lang="text"
+title="Commenting on artifacts to keep them grounded"
+/>
+
+The agent incorporates your feedback into future iterations, learning from past interactions. This is crucial for maintaining consistency.
+
+### How Artifacts Reference Your Documentation
+
+The workflow that actually worked:
+
+<CodeBlock
+code={`Your Repository               Antigravity Artifacts              Generated Code
+────────────────              ─────────────────────              ──────────────
+docs/                     →   [Task List]                    →
+  architecture.md         →   [Implementation Plan]          →   backend/app/
+  market.md               →     - References docs/market.md  →   calculations.py
+  api_analysis.md         →   [Walkthrough]                  →   services/
+                              [Screenshots of app running]
+                              [Browser recording]`}
+lang="text"
+title="Documentation → Artifacts → Code flow"
+/>
+
+### Browser Integration and Verification
+
+Antigravity's Chrome extension automatically captures key moments when the agent tests your application:
+- Screenshots of the running app
+- Video recordings of interactions
+- Test results and console output
+
+This is stored as part of the artifact set, proving the agent actually ran and verified the code—not just generated it.
+
+### The Critical Workflow: Keeping Artifacts Grounded
+
+This is where my active involvement was crucial. The artifacts are powerful, but they need a human keeping them honest:
+
+**1. Review artifacts before approving**
+- Check implementation plans against your documentation
+- Verify task lists match what you actually wanted
+- Watch the browser recordings to see if testing was thorough
+
+**2. Use comments to correct drift**
+
+<CodeBlock
+code={`[Me commenting on Implementation Plan artifact]:
+"This calculation doesn't match the formula in
+docs/norwegian_eletricity_market.md. The Strømstøtte
+formula is (spot - 75) × 0.90 × 1.25, not what's shown here."
+
+[Agent updates artifact]:
+Updated calculation to match docs/norwegian_eletricity_market.md
+Formula: support = (spot - 0.75) × 0.90 × 1.25`}
+lang="text"
+title="Correcting artifacts via comments"
+/>
+
+**3. Used artifacts as transparency layer**
+- Artifacts showed me what the agent was planning before it wrote code
+- I could catch architectural mistakes at the plan stage, not after implementation
+- Screenshots/videos let me verify the agent actually tested features
+
+**Why this matters:** Artifacts aren't just documentation—they're a **trust and verification mechanism**. Without reviewing them, you're blindly trusting AI-generated code. With them, you have transparency into the agent's thinking and work.
+
+## Step 3: Implementing with Google Antigravity
+
+Google Antigravity is marketed as a "vibe coding" IDE—you describe what you want, and it generates entire features. With the documentation and artifacts in place, here's how development actually went:
+
+### What Worked Well
+
+**1. Accurate Implementation of Complex Domain Logic**
+The Norwegian electricity subsidy calculation is non-trivial. From the docs:
+- Strømstøtte only applies above 75 øre/kWh threshold
+- Formula: `(spot - 75) × 0.90 × 1.25`
+- The 1.25 multiplier accounts for MVA (tax)
+- Edge cases include negative spot prices
+
+Because the `norwegian_eletricity_market.md` file had the exact formula with examples, Antigravity implemented it correctly in `backend/app/calculations.py`. I verified the generated code matched the spec—it did.
+
+**2. Architectural Consistency**
+The `norgespris_architecture.md` specified:
+- FastAPI backend with SQLAlchemy
+- Three database tables: HourlyPrice, DailyAggregate, RunningTotal
+- APScheduler for daily price fetching at 13:30 CET
+- Docker Compose with SQLite
+
+Antigravity followed this architecture throughout. When I asked for new features, they fit the existing patterns because the artifacts referenced the architecture doc.
+
+**3. Appropriate Library Selection**
+The architecture doc mentioned requirements like "smart caching" and "daily background jobs." Antigravity chose:
+- TanStack Query for React data fetching
+- APScheduler for the price fetcher service
+- SlowAPI for rate limiting
+- Recharts for visualizations
+
+These weren't random choices—they aligned with the documented requirements.
+
+### What Required Guidance
+
+**1. Verification Against Documentation**
+Even with good docs, I had to actively verify the implementation. For example, I'd check:
+- "Does this calculation in `calculations.py` match the formula in `norwegian_eletricity_market.md`?"
+- "Are we handling negative spot prices correctly per the edge case documentation?"
+
+The AI got it right most of the time, but having the docs as a reference let me catch subtle bugs early.
+
+**2. Performance Optimization Decisions**
+The architecture doc outlined the database schema but didn't specify *when* to calculate aggregates. I guided Antigravity to:
+- Pre-calculate daily aggregates when new prices arrive (not on every API request)
+- Store running totals in the database for fast cumulative queries
+- Use the aggregator service pattern described in the architecture doc
+
+These weren't in the original spec but emerged during development.
+
+**3. Deployment Details**
+The architecture doc said "Docker Compose with SQLite" but didn't cover production specifics. I added:
+- Multi-stage Docker builds for smaller images
+- Separate `docker-compose.yml` (dev) and `docker-compose.prod.yml` files
+- Caddy reverse proxy configuration for HTTPS and security headers
+
+These were implementation details that evolved as the project matured.
+
+## Managing Context with Antigravity: What Actually Works
+
+Here's what I learned about keeping Antigravity's artifacts grounded in reality:
+
+### 1. Documentation Files as Source of Truth
+
+The workflow that actually worked:
+
+<CodeBlock
+code={`docs/                          Antigravity Artifacts           Code
+─────────────────────         ────────────────────            ────────────
+architecture.md            →  [Working Spec]       →          backend/
+norwegian_electricity.md   →  [Domain Rules]       →          calculations.py
+api_analysis.md            →  [Current State]      →          services/
+                              [Screenshots]
+                              [Browser recordings]`}
+lang="text"
+title="Documentation as source of truth"
+/>
+
+**Key practice:** Whenever Antigravity's artifact drifted, I'd explicitly say:
+- "Check `docs/norwegian_eletricity_market.md` for the correct Strømstøtte formula"
+- "Reference `docs/architecture/norgespris_architecture.md` section on database schema"
+
+This kept the artifacts honest and prevented hallucination.
+
+### 2. Active Artifact Management
+
+Antigravity creates artifacts dynamically, but they need supervision:
+
+**What I did:**
+- Regularly reviewed artifacts to ensure they matched the docs
+- Corrected artifacts when they suggested patterns inconsistent with the architecture
+- Used artifacts for *working memory* (current implementation state) but docs for *truth* (what should be)
+
+**Example correction:**
+
+<CodeBlock
+code={`Me: "The artifact says to use PostgreSQL, but docs/architecture.md
+     specifies SQLite for simplicity. Update the artifact."
+
+Antigravity: [Updates artifact to reference SQLite decision from docs]`}
+lang="text"
+title="Correcting artifact drift via feedback"
+/>
+
+### 3. Verification Loop
+
+My actual development cycle:
+1. Ask Antigravity to implement feature X
+2. Antigravity references its artifacts + creates code
+3. **I verify code against original docs**
+4. If discrepancy: correct the artifact and regenerate
+5. If correct: move to next feature
+
+This verification step is critical. Without it, artifacts gradually drift from your original specifications.
+
+### 4. Let the AI Create Artifacts, But Ground Them
+
+I didn't manually create artifacts—Antigravity did that automatically. My job was ensuring they stayed grounded:
+
+**Good prompts:**
+- "Implement the price fetcher service using the architecture from docs/architecture.md"
+- "Add Statnett integration following the API patterns documented in docs/"
+- "Does this calculation match what's specified in docs/norwegian_eletricity_market.md?"
+
+**What didn't work:**
+- Assuming artifacts were always accurate
+- Not checking generated code against documentation
+- Letting the conversation drift without tying back to docs
+
+### 5. Documentation Prevents Hallucination
+
+The biggest value of upfront documentation wasn't just for planning—it was **preventing AI hallucination during implementation**.
+
+Without the docs:
+- Antigravity might invent a plausible-sounding subsidy formula that's wrong
+- Architecture decisions could change mid-project inconsistently
+- Edge cases (like negative spot prices) would be missed
+
+With the docs:
+- I could verify every generated function against the spec
+- Artifacts had real references to point to
+- The AI stayed consistent across weeks of development
+
+## Results: Was It Worth It?
+
+The workflow worked. Spotsjekk went from research to production deployment with:
+- **Full-stack implementation**: FastAPI backend, React frontend, Docker deployment
+- **Production quality**: Proper error handling, caching, rate limiting, security headers
+- **Complex domain logic**: Norwegian electricity subsidy calculations with edge cases
+- **Real-world traffic**: Live at [spotsjekk.no](https://spotsjekk.no) serving actual users
+
+Would hand-coding have been faster? Probably not. But more importantly, the AI implementation was **consistently aligned with the specification** because of the documentation grounding.
+
+The real value proposition:
+- **Research phase**: AI synthesized domain knowledge into structured docs
+- **Implementation phase**: AI generated code while I verified against docs
+- **Result**: Production software that matches the original specification
+
+The AI didn't replace thinking—it replaced typing while I focused on verification and architecture.
+
+## Key Takeaways
+
+If you're using AI coding tools with artifact/context systems like Antigravity:
+
+1. **Spec-based documentation is non-negotiable.** Write detailed specifications with exact formulas, architecture decisions, and implementation requirements before any coding starts. AI tools are only as good as the specs they work from.
+
+2. **Architecture decisions must be documented.** Database schemas, API patterns, library choices, deployment strategies—document these upfront. Without clear architectural guidance, AI tools will make inconsistent choices.
+
+3. **Detailed instructions prevent hallucination.** Vague requirements lead to plausible-sounding but incorrect implementations. The Norwegian electricity subsidy formula couldn't be guessed—it had to be specified exactly.
+
+4. **Understand your tool's context system.** Antigravity uses artifacts (internal working memory) for task lists, implementation plans, and verification. Know how they work and how to manage them.
+
+5. **Artifacts need grounding in documentation.** Let the AI create artifacts dynamically, but actively verify they reference your spec documentation. Comment on artifacts to correct drift.
+
+6. **Build a verification loop.** Always check generated code against your source documentation. Artifacts drift—spec docs don't.
+
+7. **Use explicit prompts that reference docs.** "Check docs/X.md before implementing" forces the AI to ground its work in your specifications rather than making assumptions.
+
+8. **You're the architect, AI is the builder.** AI tools are powerful code generators, but they need constant supervision and clear specifications to stay aligned with your vision.
+
+## Conclusion
+
+Building Spotsjekk taught me that AI coding tools like Antigravity are **force multipliers when properly grounded**. They're incredible at:
+- Implementing complex features from clear specifications
+- Maintaining architectural consistency when artifacts reference good docs
+- Generating production-quality code quickly
+- Providing transparency through artifacts (task lists, plans, screenshots, videos)
+
+But they need active human management for:
+- Understanding the problem domain (Norwegian electricity market regulations)
+- Creating the source-of-truth documentation upfront
+- Verifying generated code against specifications
+- Reviewing and commenting on artifacts to prevent drift
+- Making judgment calls that emerge during implementation
+
+The biggest lesson: **The quality of AI-generated code correlates directly with the quality of your upfront documentation and how well you maintain context.** Claude deep research → markdown docs → Antigravity artifacts → verified code. Skip steps at your peril.
+
+Remember: **losing context means losing your reality anchor.** Every time the AI conversation drifts from your specification documents, it starts inventing plausible-sounding solutions that may not match your requirements. Context management isn't just about performance—it's about keeping the AI tethered to truth.
+
+The workflow isn't "AI writes all the code." It's "AI implements what you've researched and specified thoroughly, while you actively maintain context through documentation references and artifact review." The research, specification, and context management are still human work—but the typing isn't.
+
+If you want to explore Spotsjekk yourself, it's live at [spotsjekk.no](https://spotsjekk.no). The codebase handles real-world production traffic and proves that AI-assisted development can produce solid, maintainable software—when you keep it honest through documentation and artifact review.
