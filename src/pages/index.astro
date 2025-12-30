@@ -70,8 +70,8 @@ const latestPost = allPosts.sort((a, b) =>
             <h3>Currently</h3>
           </div>
           <div class="currently-content">
-            <p class="currently-item">Exploring Kubernetes on local clusters</p>
-            <p class="currently-item">Building with Astro & modern web tech</p>
+            <p class="currently-item">Writing about AI coding tools and context management</p>
+            <p class="currently-item">Building production apps with Google Antigravity</p>
           </div>
         </div>
 
@@ -90,7 +90,7 @@ const latestPost = allPosts.sort((a, b) =>
           <h3 class="topics-title">Writing About</h3>
           <div class="topics-tags">
             {allTags.slice(0, 6).map(tag => (
-              <span class="topic-tag">{tag}</span>
+              <a href={`/blog/tag/${tag}`} class="topic-tag">{tag}</a>
             ))}
           </div>
         </div>
@@ -388,12 +388,16 @@ const latestPost = allPosts.sort((a, b) =>
     background: var(--background-secondary);
     border: 1px solid var(--border);
     color: var(--text-secondary);
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
     transition: all 0.2s ease;
   }
 
   .topic-tag:hover {
     border-color: var(--accent-primary);
     color: var(--accent-primary);
+    background: var(--background-tertiary);
     transform: translateY(-2px);
   }
 
