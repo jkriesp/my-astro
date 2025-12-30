@@ -67,12 +67,12 @@ export default {
 
             // Dark mode
             '[data-theme="dark"] &': {
-              "--tw-prose-body": "#d4dbd6", // Soft sage-tinted light gray
-              "--tw-prose-headings": "#e8f0eb", // Lighter sage-tinted white
-              "--tw-prose-links": "#b5a8d6", // Lighter lavender
-              "--tw-prose-bold": "#e8f0eb", // Lighter sage-tinted white
-              "--tw-prose-code": "#9db89d", // Lighter sage
-              "--tw-prose-quotes": "#9ca6a0", // Muted sage-tinted gray
+              "--tw-prose-body": "#e2e8f0", // Crisp light slate
+              "--tw-prose-headings": "#f8fafc", // Almost white for excellent contrast
+              "--tw-prose-links": "#c4b5fd", // Vibrant lavender
+              "--tw-prose-bold": "#f8fafc", // Almost white for emphasis
+              "--tw-prose-code": "#86efac", // Bright sage green
+              "--tw-prose-quotes": "#94a3b8", // Muted slate gray
             },
           },
         },
