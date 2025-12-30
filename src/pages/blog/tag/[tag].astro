@@ -1,0 +1,99 @@
+---
+import BaseHead from "../../../components/BaseHead.astro";
+import Header from "../../../components/Header.astro";
+import Footer from "../../../components/Footer.astro";
+import { SITE_TITLE } from "../../../consts";
+import { getCollection } from "astro:content";
+import BlogPostPreviewCard from "../../../components/BlogPostPreviewCard.astro";
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection("blog");
+  const uniqueTags = [...new Set(allPosts.flatMap((post) => post.data.tags))];
+
+  return uniqueTags.map((tag) => {
+    const filteredPosts = allPosts.filter((post) =>
+      post.data.tags.includes(tag)
+    );
+    return {
+      params: { tag },
+      props: { posts: filteredPosts },
+    };
+  });
+}
+
+const { tag } = Astro.params;
+const { posts } = Astro.props;
+
+const sortedPosts = posts.sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={`Posts tagged "${tag}" | ${SITE_TITLE}`} description={`All posts tagged with ${tag}`} />
+    <style>
+      main {
+        width: 960px;
+        max-width: calc(100% - 2em);
+        margin: 0 auto;
+        padding: 3em 1em;
+      }
+      .tag-header {
+        margin-bottom: 2rem;
+      }
+      .tag-title {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+      .tag-badge {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+        color: white;
+        border-radius: 0.5rem;
+        font-weight: 600;
+      }
+      .back-link {
+        display: inline-block;
+        margin-bottom: 1rem;
+        color: var(--accent-primary);
+        text-decoration: none;
+        transition: transform 0.2s ease;
+      }
+      .back-link:hover {
+        transform: translateX(-4px);
+      }
+      .posts-grid {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+      }
+      .post-count {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+  <body>
+    <Header />
+    <main>
+      <a href="/blog" class="back-link">← Back to all posts</a>
+      <div class="tag-header">
+        <h1 class="tag-title">
+          Posts tagged with <span class="tag-badge">{tag}</span>
+        </h1>
+        <p class="post-count">{sortedPosts.length} {sortedPosts.length === 1 ? 'post' : 'posts'}</p>
+      </div>
+      <section>
+        <div class="posts-grid">
+          {sortedPosts.map((post) => <BlogPostPreviewCard post={post} />)}
+        </div>
+      </section>
+    </main>
+    <Footer />
+  </body>
+</html>
