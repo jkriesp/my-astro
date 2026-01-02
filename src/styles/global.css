@@ -43,6 +43,16 @@
 @layer components {
   .prose {
     @apply max-w-[65ch] mx-auto text-lg leading-7;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  }
+
+  /* Ensure long text in lists and code blocks break properly */
+  .prose li,
+  .prose code,
+  .prose a {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
   }
 
   .tag {

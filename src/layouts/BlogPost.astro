@@ -53,6 +53,10 @@ const useGeneratedArt = true;
 				margin: auto;
 				padding: 1em;
 				@apply text-gray-600 dark:text-gray-300;
+				/* Prevent horizontal overflow from long text */
+				overflow-wrap: break-word;
+				word-wrap: break-word;
+				word-break: break-word;
 			}
 			/* Make text area wider on mobile screens */
 			@media (max-width: 768px) {
@@ -60,6 +64,18 @@ const useGeneratedArt = true;
 					max-width: calc(100% - 1em);
 					padding: 0.5em;
 				}
+			}
+			/* Ensure inline code and links break properly */
+			.prose :global(code),
+			.prose :global(a) {
+				overflow-wrap: break-word;
+				word-wrap: break-word;
+				word-break: break-word;
+			}
+			/* Ensure list items with long text break properly */
+			.prose :global(li) {
+				overflow-wrap: break-word;
+				word-wrap: break-word;
 			}
 			.title {
 				margin-bottom: 1em;
